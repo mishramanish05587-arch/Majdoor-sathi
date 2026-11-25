@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=80112628-9e74-4159-a4e2-ddf0dfc0b5f6
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>मजदूर साथी - हर हाथ को काम</title>
+  <style>
+    :root {
+      --primary: #1a3a8a;
+      --primary-dark: #10255e;
+      --accent: #f59e0b;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #cbd5e1;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 40px; overflow-x: hidden; }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      padding: 14px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .brand { cursor: pointer; user-select: none; }
+    .brand h1 { font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 6px; }
+    .brand p { font-size: 0.75rem; color: #cbd5e1; margin-top: 2px; }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-arrow {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+      border-radius: 8px;
+      width: 34px;
+      height: 34px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-arrow:active { background: rgba(255,255,255,0.35); }
+    .lang-btn {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .header-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .btn-profile {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(245, 158, 11, 0.35);
+    }
+    .btn-logout {
+      background: var(--danger);
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(220, 38, 38, 0.35);
+    }
+
+    /* Top Tabs Bar */
+    .top-tabs-wrapper {
+      max-width: 600px;
+      margin: 12px auto 0;
+      padding: 0 12px;
+    }
+    .top-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: #ffffff;
+      padding: 6px;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border: 1px solid #e2e8f0;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 10px 6px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+    .tab-btn span.icon { font-size: 1.2rem; }
+    .tab-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(26, 58, 138, 0.3);
+    }
+
+    /* Container & Sections */
+    .container { max-width: 600px; margin: 12px auto; padding: 0 12px; touch-action: pan-y; }
+    .section { display: none; animation: fadeSlide 0.22s ease; }
+    .section.active { display: block; }
+    @keyframes fadeSlide {
+      from { opacity: 0.4; transform: translateX(8px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      border: 1px solid #e2e8f0;
+    }
+    .card-title {
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Form Elements */
+    .form-group { margin-bottom: 12px; }
+    label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 5px; color: #334155; }
+    input, select, textarea {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      background: #fff;
+      color: var(--text);
+    }
+    input:focus, select:focus { outline: none; border-color: var(--primary); }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .btn-primary {
+      width: 100%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+    .btn-success {
+      width: 100%;
+      background: var(--success);
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Worker List Cards */
+    .worker-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+      background: #fff;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .worker-avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 2px solid var(--primary);
+      flex-shrink: 0;
+      background: #e2e8f0;
+    }
+    .worker-info { flex: 1; min-width: 0; }
+    .worker-name { font-weight: 800; font-size: 1.05rem; color: #0f172a; }
+    .worker-badge {
+      display: inline-block;
+      background: #dbeafe;
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin: 4px 0;
+    }
+    .worker-meta { font-size: 0.82rem; color: var(--muted); line-height: 1.4; }
+    .call-btn {
+      display: inline-block;
+      margin-top: 8px;
+      background: var(--success);
+      color: #fff;
+      text-decoration: none;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    /* Large Digital ID Card */
+    .id-card-box {
+      background: linear-gradient(145deg, #ffffff, #f8fafc);
+      border: 3px solid var(--primary);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(26, 58, 138, 0.15);
+      margin-bottom: 14px;
+    }
+    .id-card-header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      padding: 14px;
+      text-align: center;
+      border-bottom: 4px solid var(--accent);
+    }
+    .id-card-header h2 { font-size: 1.3rem; font-weight: 900; letter-spacing: 0.5px; }
+    .id-card-header p { font-size: 0.8rem; color: #fde68a; font-weight: 600; }
+    .id-card-body { padding: 18px; text-align: center; }
+    .id-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 16px;
+      object-fit: cover;
+      border: 3px solid var(--primary);
+      margin: 0 auto 12px;
+      display: block;
+      background: #e2e8f0;
+    }
+    .id-number-tag {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 5px 16px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+    .id-details-table {
+      width: 100%;
+      text-align: left;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 0.92rem;
+    }
+    .id-details-table td {
+      padding: 7px 6px;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+    .id-details-table td:first-child { font-weight: 700; color: var(--muted); width: 42%; }
+    .id-details-table td:last-child { font-weight: 700; color: #0f172a; }
+    .validity-banner {
+      margin-top: 14px;
+      background: #ecfdf5;
+      border: 1.5px solid #10b981;
+      border-radius: 12px;
+      padding: 10px;
+      color: #065f46;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .validity-banner.expired {
+      background: #fef2f2;
+      border-color: #ef4444;
+      color: #991b1b;
+    }
+
+    /* Status Toggle Button below ID */
+    .status-toggle-btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 14px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fff;
+      cursor: pointer;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: transform 0.1s;
+    }
+    .status-toggle-btn.online { background: var(--success); }
+    .status-toggle-btn.offline { background: var(--danger); }
+
+    /* Stats Boxes */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .stat-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+    .stat-box span { display: block; font-size: 0.8rem; color: var(--muted); font-weight: 700; }
+    .stat-box strong { display: block; font-size: 1.35rem; color: #0f172a; margin-top: 4px; }
+
+    /* Switch Toggle for Admin */
+    .switch-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #cbd5e1;
+      margin-bottom: 12px;
+    }
+    .switch { position: relative; display: inline-block; width: 52px; height: 28px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #cbd5e1; transition: .3s; border-radius: 28px;
+    }
+    .slider:before {
+      position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px;
+      background-color: white; transition: .3s; border-radius: 50%;
+    }
+    input:checked + .slider { background-color: var(--success); }
+    input:checked + .slider:before { transform: translateX(24px); }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.72);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal.active { display: flex; }
+    .modal-content {
+      background: #fff;
+      border-radius: 18px;
+      padding: 20px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+
+    /* Starting Customer Login Overlay */
+    .start-login-overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .start-login-overlay.active { display: flex; }
+    .start-login-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 24px 20px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      #printableIdCard, #printableIdCard * { visibility: visible; }
+      #printableIdCard { position: absolute; left: 0; top: 0; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Firebase secured login: name is requested only during first-time signup -->
+  <div class="start-login-overlay active" id="startLoginScreen">
+    <div class="start-login-card">
+      <div style="font-size:2.5rem;margin-bottom:6px;">🛠️</div>
+      <h2 style="color:var(--primary);font-size:1.45rem;font-weight:900;">मजदूर साथी में स्वागत है</h2>
+      <p style="color:var(--muted);font-size:.88rem;margin:4px 0 16px;">मोबाइल नंबर और 8 अंकों के पासवर्ड से सुरक्षित लॉगिन</p>
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <button type="button" class="btn-primary" style="flex:1;margin:0;" onclick="showMsAuthMode('login')">पहले से अकाउंट है</button>
+        <button type="button" class="btn-logout" style="flex:1;margin:0;" onclick="showMsAuthMode('signup')">पहली बार आए हैं</button>
+      </div>
+      <form id="msLoginForm" onsubmit="handleCustomerLogin(event)" style="text-align:left;">
+        <div class="form-group"><label>मोबाइल नंबर (10 अंक) *</label><input type="tel" id="custLoginPhone" required inputmode="numeric" pattern="[0-9]{10}" maxlength="10" autocomplete="tel-national" placeholder="10 अंकों का मोबाइल नंबर" /></div>
+        <div class="form-group"><label>8 अंकों का पासवर्ड *</label><input type="password" id="custLoginPassword" required inputmode="numeric" pattern="[0-9]{8}" minlength="8" maxlength="8" autocomplete="current-password" placeholder="8 अंकों का पासवर्ड" /></div>
+        <button type="submit" class="btn-primary" style="font-size:1.05rem;padding:14px;">🔓 लॉगिन करें</button>
+      </form>
+      <form id="msSignupForm" onsubmit="startMsPasswordSignup(event)" style="display:none;text-align:left;">
+        <div class="form-group"><label>आपका पूरा नाम *</label><input type="text" id="custSignupName" required maxlength="70" placeholder="अपना पूरा नाम लिखें" /></div>
+        <div class="form-group"><label>मोबाइल नंबर (10 अंक) *</label><input type="tel" id="custSignupPhone" required inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10 अंकों का मोबाइल नंबर" /></div>
+        <div class="form-group"><label>नया 8 अंकों का पासवर्ड *</label><input type="password" id="custSignupPassword" required inputmode="numeric" pattern="[0-9]{8}" minlength="8" maxlength="8" autocomplete="new-password" placeholder="नया 8 अंकों का पासवर्ड" /></div>
+        <div class="form-group"><label>पासवर्ड दोबारा लिखें *</label><input type="password" id="custSignupPassword2" required inputmode="numeric" pattern="[0-9]{8}" minlength="8" maxlength="8" autocomplete="new-password" placeholder="वही पासवर्ड फिर लिखें" /></div>
+        <button type="submit" class="btn-primary" style="font-size:1.05rem;padding:14px;">🔐 अकाउंट बनाएँ</button>
+      </form>
+      <p id="msAuthMessage" role="status" style="font-size:.82rem;color:#b91c1c;margin-top:10px;min-height:18px;"></p>
+      <p style="font-size:.72rem;color:var(--muted);margin-top:8px;">पहली बार नाम, मोबाइल और पासवर्ड से अकाउंट बनाएँ। अगली बार केवल मोबाइल और पासवर्ड डालें। SMS OTP नहीं लगेगा।</p>
+    </div>
+  </div>
+
+  <!-- Header (Exact Same Two Buttons: Profile & Logout) -->
+  <header class="header">
+    <div class="header-top">
+      <div class="brand" id="brandLogo" title="मजदूर साथी">
+        <h1>🛠️ <span data-t="appTitle">मजदूर साथी</span></h1>
+        <p data-t="appTagline">हर हाथ को काम</p>
+      </div>
+      <div class="header-controls">
+        <button class="nav-arrow" onclick="goBack()" title="पिछला पेज">⬅️</button>
+        <button class="nav-arrow" onclick="goForward()" title="अगला पेज">➡️</button>
+        <button class="lang-btn" onclick="toggleLanguage()">🌐 <span id="langLabel">English</span></button>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-profile" onclick="openProfileModal()">🪪 <span data-t="myProfile">मेरी प्रोफाइल</span></button>
+      <button class="btn-logout" onclick="logoutUser()">🚪 <span data-t="logout">लॉगआउट</span></button>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs Moved Right Below Header -->
+  <div class="top-tabs-wrapper">
+    <nav class="top-tabs">
+      <button class="tab-btn active" id="tab-search" onclick="switchTab('search')">
+        <span class="icon">🔍</span>
+        <span data-t="tabSearch">खोजें</span>
+      </button>
+      <button class="tab-btn" id="tab-register" onclick="switchTab('register')">
+        <span class="icon">📝</span>
+        <span data-t="tabRegister">रजिस्ट्रेशन</span>
+      </button>
+      <button class="tab-btn" id="tab-khata" onclick="switchTab('khata')">
+        <span class="icon">📒</span>
+        <span data-t="tabKhata">खाता</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Main Content (Swipe Enabled) -->
+  <main class="container" id="swipeContainer">
+
+    <!-- 1. SEARCH SECTION -->
+    <section id="sec-search" class="section active">
+      <div class="card">
+        <div class="card-title">🔍 <span data-t="findWorkerTitle">कारीगर / मजदूर खोजें</span></div>
+        <div class="row-2">
+          <div class="form-group">
+            <label data-t="filterCategory">काम की श्रेणी</label>
+            <select id="searchCategory" onchange="renderWorkers()">
+              <option value="ALL">सभी श्रेणियां (All)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label data-t="filterCity">शहर / इलाका / PIN Code</label>
+            <input type="text" id="searchCity" placeholder="शहर या 6 अंकों का PIN..." oninput="renderWorkers()" />
+          </div>
+        </div>
+      </div>
+      <div id="workersList"></div>
+    </section>
+
+    <!-- 2. REGISTRATION SECTION -->
+    <section id="sec-register" class="section">
+      <div class="card">
+        <div class="card-title">📝 <span data-t="regTitle">नया कारीगर रजिस्ट्रेशन</span></div>
+        <form id="regForm" onsubmit="registerWorker(event)">
+          <div class="form-group">
+            <label data-t="fullName">पूरा नाम *</label>
+            <input type="text" id="regName" required placeholder="जैसे: रमेश कुमार" />
+          </div>
+          <div class="row-2">
+            <div class="form-group">
+              <label data-t="mobileNum">मोबाइल नंबर *</label>
+              <input type="tel" id="regPhone" required pattern="[0-9]{10}" maxlength="10" placeholder="10 अंकों का नंबर" />
+            </div>
+            <div class="form-group">
+              <label data-t="workCategory">काम की श्रेणी *</label>
+              <select id="regCategory" required></select>
+            </div>
+          </div>
+          <div class="row-2">
+            <div class="form-group">
+              <label data-t="dailyRate">रोज़ाना रेट (₹) *</label>
+              <input type="number" id="regRate" required placeholder="जैसे: 600" />
+            </div>
+            <div class="form-group">
+              <label data-t="cityArea">शहर / गांव *</label>
+              <input type="text" id="regCity" required placeholder="जैसे: पटना / दिल्ली" />
+            </div>
+          </div>
+          <div class="row-2">
+            <div class="form-group">
+              <label data-t="pinCodeLabel">पिन कोड (PIN Code) *</label>
+              <input type="tel" id="regPincode" required pattern="[0-9]{6}" maxlength="6" placeholder="6 अंकों का PIN" />
+            </div>
+            <div class="form-group">
+              <label data-t="aadhaarLabel">आधार कार्ड / ID प्रूफ *</label>
+              <input type="text" id="regAadhaar" required maxlength="16" placeholder="12 अंकों का आधार नंबर" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label data-t="uploadPhoto">फोटो अपलोड करें (ID कार्ड के लिए)</label>
+            <input type="file" id="regPhoto" accept="image/*" />
+          </div>
+
+          <!-- Payment Box -->
+          <div id="regPaymentBox" style="background:#fffbeb; border:1.5px solid #f59e0b; padding:12px; border-radius:12px; margin-bottom:12px;">
+            <div style="font-weight:800; color:#b45309; margin-bottom:6px;">
+              💳 <span data-t="regFeeLabel">वार्षिक रजिस्ट्रेशन शुल्क:</span> ₹<span id="displayFeeAmount">99</span>
+            </div>
+            <div style="font-size:0.82rem; color:#78350f; margin-bottom:8px;">
+              UPI ID: <strong id="displayUpiId">mazdoorsathi@upi</strong>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label data-t="utrLabel">पेमेंट UTR / रेफरेंस नंबर *</label>
+              <input type="text" id="regUtr" placeholder="12 अंकों का UTR नंबर डालें" />
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary">✅ <span data-t="submitReg">रजिस्ट्रेशन पूरा करें</span></button>
+        </form>
+      </div>
+    </section>
+
+    <!-- 3. KHATA & ATTENDANCE SECTION -->
+    <section id="sec-khata" class="section">
+      <div class="card">
+        <div class="card-title">📒 <span data-t="khataTitle">खाता और हाजिरी रजिस्टर</span></div>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <span data-t="totalDays">कुल काम (दिन)</span>
+            <strong id="khataTotalDays">0</strong>
+          </div>
+          <div class="stat-box">
+            <span data-t="totalPaid">कुल भुगतान (₹)</span>
+            <strong id="khataTotalPaid">₹0</strong>
+          </div>
+        </div>
+        <form onsubmit="addKhataEntry(event)">
+          <div class="form-group">
+            <label data-t="personName">कारीगर या मालिक का नाम</label>
+            <input type="text" id="khataName" required placeholder="नाम लिखें" />
+          </div>
+          <div class="row-2">
+            <div class="form-group">
+              <label data-t="entryDate">तारीख</label>
+              <input type="date" id="khataDate" required />
+            </div>
+            <div class="form-group">
+              <label data-t="attendance">हाजिरी</label>
+              <select id="khataAtt">
+                <option value="1">पूरी हाजिरी (1 दिन)</option>
+                <option value="0.5">आधी हाजिरी (0.5 दिन)</option>
+                <option value="0">छुट्टी (0 दिन)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label data-t="amountPaid">प्राप्त भुगतान ₹</label>
+            <input type="number" id="khataAmount" value="0" min="0" />
+          </div>
+          <button type="submit" class="btn-primary" data-t="saveKhataBtn">हाजिरी और हिसाब जोड़ें</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📜 <span data-t="historyTitle">पिछला रिकॉर्ड (History)</span></div>
+        <div id="khataHistoryList" style="font-size:0.88rem; color:var(--muted);">अभी कोई रिकॉर्ड दर्ज नहीं है।</div>
+      </div>
+    </section>
+
+    <!-- 4. WORKER PROFILE & LARGE ID CARD SECTION -->
+    <section id="sec-profile" class="section">
+      <div id="profileContent"></div>
+    </section>
+
+    <!-- 5. HIDDEN ADMIN PANEL SECTION -->
+    <section id="sec-admin" class="section">
+      <div class="card">
+        <div class="card-title">🛡️ <span data-t="adminPanelTitle">एडमिन कंट्रोल पैनल</span></div>
+
+        <div class="switch-row">
+          <div>
+            <strong style="display:block; font-size:0.95rem;" data-t="payGatewayToggle">पेमेंट गेटवे (Registration Fee)</strong>
+            <small style="color:var(--muted);" id="payStatusHint">अभी चालू है (फीस अनिवार्य)</small>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="adminPayToggle" checked onchange="togglePaymentGateway()" />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="row-2">
+          <div class="form-group">
+            <label data-t="feeSetting">रजिस्ट्रेशन फीस (₹)</label>
+            <input type="number" id="adminFeeInput" value="99" />
+          </div>
+          <div class="form-group">
+            <label>UPI ID</label>
+            <input type="text" id="adminUpiInput" value="mazdoorsathi@upi" />
+          </div>
+        </div>
+        <button class="btn-success" onclick="savePaymentSettings()" style="margin-bottom:16px;">💾 <span data-t="savePaySettings">पेमेंट सेटिंग सेव करें</span></button>
+
+        <div style="border-top:1px solid #e2e8f0; padding-top:14px; margin-bottom:16px;">
+          <label>🔑 <span data-t="changePassLabel">नया एडमिन पासवर्ड बदलें</span></label>
+          <div class="row-2">
+            <input type="password" id="newAdminPass" placeholder="नया पासवर्ड लिखें" />
+            <button class="btn-primary" style="margin-top:0;" onclick="changeAdminPassword()" data-t="updatePassBtn">पासवर्ड अपडेट करें</button>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid #e2e8f0; padding-top:14px;">
+          <label>📂 <span data-t="manageCatLabel">मैनुअल काम की श्रेणी जोड़ें</span></label>
+          <div class="row-2" style="margin-bottom:10px;">
+            <input type="text" id="newCatInput" placeholder="जैसे: प्लंबर / पेंटर" />
+            <button class="btn-primary" style="margin-top:0;" onclick="addCategory()" data-t="addCatBtn">+ श्रेणी जोड़ें</button>
+          </div>
+          <div id="adminCatList" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Profile Login Modal -->
+  <div class="modal" id="profileModal">
+    <div class="modal-content">
+      <h3 style="margin-bottom:10px; color:var(--primary);">🪪 <span data-t="openProfileHead">अपनी प्रोफाइल और ID खोलें</span></h3>
+      <p style="font-size:0.85rem; color:var(--muted); margin-bottom:12px;" data-t="openProfileSub">अपना ID नंबर (जैसे MS-1001) या 10 अंकों का मोबाइल नंबर डालें:</p>
+      <input type="text" id="profileSearchInput" placeholder="MS-1001 या मोबाइल नंबर" style="margin-bottom:12px;" />
+      <div class="row-2">
+        <button class="btn-primary" style="margin-top:0;" onclick="loadWorkerProfile()" data-t="viewIdBtn">ID कार्ड देखें</button>
+        <button class="btn-logout" onclick="closeModals()" data-t="cancelBtn">बंद करें</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Password Modal -->
+  <div class="modal" id="adminModal">
+    <div class="modal-content">
+      <h3 style="margin-bottom:10px; color:var(--primary);">🔐 एडमिन लॉगिन</h3>
+      <p style="font-size:0.85rem; color:var(--muted); margin-bottom:12px;">एडमिन पैनल खोलने के लिए गुप्त पासवर्ड डालें:</p>
+      <input type="password" id="adminPassInput" placeholder="पासवर्ड डालें (डिफ़ॉल्ट: 1234)" style="margin-bottom:12px;" />
+      <div class="row-2">
+        <button class="btn-primary" style="margin-top:0;" onclick="verifyAdmin()">लॉगिन करें</button>
+        <button class="btn-logout" onclick="closeModals()">बंद करें</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script>
+    // Firebase Authentication: phone number is mapped to an internal email alias.
+    // The visible login remains mobile + 8-digit password; SMS OTP is not used.
+    const msFirebaseConfig = {
+      apiKey: "AIzaSyBWCeEousFquGE91Wdafoq_uV0R36N-KL8",
+      authDomain: "majdoor-sathi-e97c1.firebaseapp.com",
+      projectId: "majdoor-sathi-e97c1",
+      storageBucket: "majdoor-sathi-e97c1.firebasestorage.app",
+      messagingSenderId: "1066087191412",
+      appId: "1:1066087191412:web:3020d6291c31db97389221",
+      measurementId: "G-DBND7T6MDQ"
+    };
+    let msAuth = null, msFirebaseReady = false, msFirebaseInitError = null;
+    try {
+      if (typeof firebase === 'undefined' || !firebase.auth) throw new Error('Firebase SDK लोड नहीं हुआ। इंटरनेट कनेक्शन जाँचें।');
+      if (!firebase.apps.length) firebase.initializeApp(msFirebaseConfig);
+      msAuth = firebase.auth(); msFirebaseReady = true;
+      msAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(err => console.error('Firebase persistence:', err));
+    } catch (err) { msFirebaseInitError = err; console.error('Firebase initialization:', err); }
+
+    // Default State & LocalStorage
+    const defaultCategories = ['राजमिस्त्री (Mason)', 'मजदूर (Helper)', 'इलेक्ट्रीशियन (Electrician)', 'प्लंबर (Plumber)', 'पेंटर (Painter)', 'बढ़ई (Carpenter)'];
+    const defaultWorkers = [
+      {
+        id: 'MS-1001',
+        name: 'रमेश कुमार',
+        phone: '9876543210',
+        category: 'राजमिस्त्री (Mason)',
+        rate: 750,
+        city: 'पटना',
+        pincode: '800001',
+        aadhaar: 'XXXX-XXXX-4512',
+        photo: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23dbeafe"/><circle cx="60" cy="44" r="22" fill="%231a3a8a"/><path d="M24 106c0-20 16-34 36-34s36 14 36 34" fill="%231a3a8a"/></svg>',
+        available: true,
+        validUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+      },
+      {
+        id: 'MS-1002',
+        name: 'सुरेश यादव',
+        phone: '9876543211',
+        category: 'इलेक्ट्रीशियन (Electrician)',
+        rate: 650,
+        city: 'दिल्ली',
+        pincode: '110001',
+        aadhaar: 'XXXX-XXXX-8821',
+        photo: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23fef3c7"/><circle cx="60" cy="44" r="22" fill="%23b45309"/><path d="M24 106c0-20 16-34 36-34s36 14 36 34" fill="%23b45309"/></svg>',
+        available: true,
+        validUntil: new Date(Date.now() + 320 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+      }
+    ];
+
+    let state = {
+      lang: 'hi',
+      categories: JSON.parse(localStorage.getItem('ms_cats')) || defaultCategories,
+      workers: JSON.parse(localStorage.getItem('ms_workers')) || defaultWorkers,
+      khata: JSON.parse(localStorage.getItem('ms_khata')) || [],
+      adminPass: localStorage.getItem('ms_admin_pass') || '1234',
+      paymentEnabled: localStorage.getItem('ms_pay_enabled') !== 'false',
+      regFee: localStorage.getItem('ms_reg_fee') || '99',
+      upiId: localStorage.getItem('ms_upi_id') || 'mazdoorsathi@upi',
+      currentWorkerId: localStorage.getItem('ms_logged_worker') || null,
+      customerUser: null,
+      historyStack: ['search'],
+      historyIndex: 0
+    };
+
+    const translations = {
+      hi: {
+        appTitle: 'मजदूर साथी',
+        appTagline: 'हर हाथ को काम',
+        myProfile: 'मेरी प्रोफाइल',
+        logout: 'लॉगआउट',
+        tabSearch: 'खोजें',
+        tabRegister: 'रजिस्ट्रेशन',
+        tabKhata: 'खाता',
+        findWorkerTitle: 'कारीगर / मजदूर खोजें',
+        filterCategory: 'काम की श्रेणी',
+        filterCity: 'शहर / इलाका / PIN Code',
+        regTitle: 'नया कारीगर रजिस्ट्रेशन',
+        fullName: 'पूरा नाम *',
+        mobileNum: 'मोबाइल नंबर *',
+        workCategory: 'काम की श्रेणी *',
+        dailyRate: 'रोज़ाना रेट (₹) *',
+        cityArea: 'शहर / गांव *',
+        pinCodeLabel: 'पिन कोड (PIN Code) *',
+        aadhaarLabel: 'आधार कार्ड / ID प्रूफ *',
+        uploadPhoto: 'फोटो अपलोड करें (ID कार्ड के लिए)',
+        regFeeLabel: 'वार्षिक रजिस्ट्रेशन शुल्क:',
+        utrLabel: 'पेमेंट UTR / रेफरेंस नंबर *',
+        submitReg: 'रजिस्ट्रेशन पूरा करें',
+        khataTitle: 'खाता और हाजिरी रजिस्टर',
+        totalDays: 'कुल काम (दिन)',
+        totalPaid: 'कुल भुगतान (₹)',
+        personName: 'कारीगर या मालिक का नाम',
+        entryDate: 'तारीख',
+        attendance: 'हाजिरी',
+        amountPaid: 'प्राप्त भुगतान ₹',
+        saveKhataBtn: 'हाजिरी और हिसाब जोड़ें',
+        historyTitle: 'पिछला रिकॉर्ड (History)',
+        adminPanelTitle: 'एडमिन कंट्रोल पैनल',
+        payGatewayToggle: 'पेमेंट गेटवे (Registration Fee)',
+        feeSetting: 'रजिस्ट्रेशन फीस (₹)',
+        savePaySettings: 'पेमेंट सेटिंग सेव करें',
+        changePassLabel: 'नया एडमिन पासवर्ड बदलें',
+        updatePassBtn: 'पासवर्ड अपडेट करें',
+        manageCatLabel: 'मैनुअल काम की श्रेणी जोड़ें',
+        addCatBtn: '+ श्रेणी जोड़ें',
+        openProfileHead: 'अपनी प्रोफाइल और ID खोलें',
+        openProfileSub: 'अपना ID नंबर (जैसे MS-1001) या 10 अंकों का मोबाइल नंबर डालें:',
+        viewIdBtn: 'ID कार्ड देखें',
+        cancelBtn: 'बंद करें'
+      },
+      en: {
+        appTitle: 'Mazdoor Sathi',
+        appTagline: 'Work for Every Hand',
+        myProfile: 'My Profile',
+        logout: 'Logout',
+        tabSearch: 'Search',
+        tabRegister: 'Register',
+        tabKhata: 'Khata',
+        findWorkerTitle: 'Find Skilled Worker / Labour',
+        filterCategory: 'Work Category',
+        filterCity: 'City / Area / PIN Code',
+        regTitle: 'New Worker Registration',
+        fullName: 'Full Name *',
+        mobileNum: 'Mobile Number *',
+        workCategory: 'Work Category *',
+        dailyRate: 'Daily Rate (₹) *',
+        cityArea: 'City / Village *',
+        pinCodeLabel: 'PIN Code (6-Digit) *',
+        aadhaarLabel: 'Aadhaar Card / ID Proof *',
+        uploadPhoto: 'Upload Photo (For ID Card)',
+        regFeeLabel: 'Annual Registration Fee:',
+        utrLabel: 'Payment UTR / Reference No. *',
+        submitReg: 'Complete Registration',
+        khataTitle: 'Khata & Attendance Register',
+        totalDays: 'Total Work (Days)',
+        totalPaid: 'Total Paid (₹)',
+        personName: 'Worker or Employer Name',
+        entryDate: 'Date',
+        attendance: 'Attendance',
+        amountPaid: 'Amount Received ₹',
+        saveKhataBtn: 'Add Attendance & Entry',
+        historyTitle: 'Past Records (History)',
+        adminPanelTitle: 'Admin Control Panel',
+        payGatewayToggle: 'Payment Gateway (Registration Fee)',
+        feeSetting: 'Registration Fee (₹)',
+        savePaySettings: 'Save Payment Settings',
+        changePassLabel: 'Change Admin Password',
+        updatePassBtn: 'Update Password',
+        manageCatLabel: 'Add Manual Work Category',
+        addCatBtn: '+ Add Category',
+        openProfileHead: 'Open Your Profile & ID',
+        openProfileSub: 'Enter your ID number (e.g. MS-1001) or 10-digit mobile number:',
+        viewIdBtn: 'View ID Card',
+        cancelBtn: 'Close'
+      }
+    };
+
+    function saveData() {
+      localStorage.setItem('ms_cats', JSON.stringify(state.categories));
+      localStorage.setItem('ms_workers', JSON.stringify(state.workers));
+      localStorage.setItem('ms_khata', JSON.stringify(state.khata));
+      localStorage.setItem('ms_admin_pass', state.adminPass);
+      localStorage.setItem('ms_pay_enabled', state.paymentEnabled);
+      localStorage.setItem('ms_reg_fee', state.regFee);
+      localStorage.setItem('ms_upi_id', state.upiId);
+    }
+
+    // Firebase-backed mobile + password authentication. Name is signup-only.
+    const MS_AUTH_ALIAS_DOMAIN = '@login.majdoor-sathi-e97c1.firebaseapp.com';
+    function msPhoneEmail(phone) {
+      const digits = String(phone || '').replace(/\D/g, '');
+      if (!/^\d{10}$/.test(digits)) throw new Error('सही 10 अंकों का मोबाइल नंबर डालें।');
+      return '91' + digits + MS_AUTH_ALIAS_DOMAIN;
+    }
+    function msAuthMessage(message, ok=false) {
+      const el = document.getElementById('msAuthMessage');
+      if (el) { el.textContent = message || ''; el.style.color = ok ? '#15803d' : '#b91c1c'; }
+    }
+    // Firebase web authentication must be tested from the deployed HTTPS site,
+    // not from Android's content:// file preview or a file:// local copy.
+    function msIsLocalFilePreview() {
+      return location.protocol === 'file:' || location.protocol === 'content:' || location.origin === 'null';
+    }
+    function msRequireHostedPage() {
+      if (msIsLocalFilePreview()) {
+        msAuthMessage('यह फाइल मोबाइल के File Manager से खुली है। Firebase लॉगिन जाँचने के लिए इसी HTML को Netlify की HTTPS वेबसाइट पर Publish करके वहाँ खोलें।');
+        return false;
+      }
+      if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+        msAuthMessage('सुरक्षित HTTPS वेबसाइट पर खोलें, तभी Firebase लॉगिन चलेगा।');
+        return false;
+      }
+      return true;
+    }
+    function msWithTimeout(promise, label) {
+      let timer;
+      const timeout = new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error(label + ' में 15 सेकंड से अधिक समय लग रहा है। इंटरनेट, Firebase Authentication और वेबसाइट डोमेन जाँचें।')), 15000);
+      });
+      return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+    }
+    function showMsAuthMode(mode) {
+      document.getElementById('msLoginForm').style.display = mode === 'login' ? 'block' : 'none';
+      document.getElementById('msSignupForm').style.display = mode === 'signup' ? 'block' : 'none';
+      msAuthMessage('');
+    }
+    function msFriendlyAuthError(error) {
+      const code = error && error.code || '';
+      const map = {
+        'auth/user-not-found':'इस मोबाइल नंबर का अकाउंट नहीं मिला। पहली बार हैं तो “पहली बार आए हैं” चुनकर अकाउंट बनाएँ।',
+        'auth/wrong-password':'पासवर्ड गलत है।',
+        'auth/invalid-credential':'मोबाइल नंबर या पासवर्ड गलत है।',
+        'auth/email-already-in-use':'इस मोबाइल नंबर का अकाउंट पहले से बना है। “पहले से अकाउंट है” चुनकर लॉगिन करें।',
+        'auth/operation-not-allowed':'Firebase Console में Authentication > Sign-in method में Email/Password चालू करें।',
+        'auth/unauthorized-domain':'Firebase Authentication के Authorized domains में इस वेबसाइट का डोमेन जोड़ें।',
+        'auth/network-request-failed':'इंटरनेट या Firebase सर्वर से कनेक्शन नहीं हुआ।',
+        'auth/too-many-requests':'बहुत बार कोशिश हुई है। कुछ देर बाद फिर प्रयास करें。'
+      };
+      return map[code] || ('Firebase त्रुटि ' + (code || '') + ': ' + (error && error.message || 'फिर कोशिश करें।'));
+    }
+    function msSetSignedInUser(user, preferredName) {
+      if (!user) return;
+      const email = String(user.email || '').toLowerCase();
+      const match = email.match(/^91(\d{10})@login\.majdoor-sathi-e97c1\.firebaseapp\.com$/);
+      if (!match) { msAuthMessage('इस Firebase खाते से मोबाइल नंबर नहीं मिला।'); return; }
+      const phone = match[1];
+      const worker = (state.workers || []).find(w => String(w.phone || '').replace(/\D/g, '') === phone);
+      const name = (worker && worker.name) || preferredName || user.displayName || localStorage.getItem('ms_auth_name') || 'उपयोगकर्ता';
+      state.customerUser = { name, phone, role: worker ? 'worker' : 'owner', uid: user.uid };
+      state.currentWorkerId = worker ? worker.id : null;
+      if (worker) localStorage.setItem('ms_logged_worker', worker.id); else localStorage.removeItem('ms_logged_worker');
+      localStorage.setItem('ms_auth_phone', phone);
+      localStorage.setItem('ms_auth_name', name);
+      localStorage.setItem('ms_customer_user', JSON.stringify(state.customerUser));
+      document.getElementById('startLoginScreen').classList.remove('active');
+      if (typeof syncKhataLoginIdentity === 'function') syncKhataLoginIdentity();
+      if (typeof renderKhata === 'function') renderKhata();
+    }
+    function checkCustomerLogin() {
+      const overlay = document.getElementById('startLoginScreen');
+      if (msAuth && msAuth.currentUser) msSetSignedInUser(msAuth.currentUser);
+      else { state.customerUser = null; if (overlay) overlay.classList.add('active'); }
+    }
+    async function handleCustomerLogin(e) {
+      e.preventDefault();
+      const phone = document.getElementById('custLoginPhone').value.replace(/\D/g, '');
+      const password = document.getElementById('custLoginPassword').value;
+      if (!/^\d{10}$/.test(phone) || !/^\d{8}$/.test(password)) return msAuthMessage('10 अंकों का मोबाइल नंबर और ठीक 8 अंकों का पासवर्ड डालें।');
+      try {
+        if (!msRequireHostedPage()) return;
+        if (!msFirebaseReady) throw msFirebaseInitError || new Error('Firebase तैयार नहीं है।');
+        msAuthMessage('Firebase में लॉगिन जाँचा जा रहा है…', true);
+        const result = await msWithTimeout(msAuth.signInWithEmailAndPassword(msPhoneEmail(phone), password), 'Firebase लॉगिन');
+        msSetSignedInUser(result.user);
+        document.getElementById('custLoginPassword').value = '';
+        msAuthMessage('लॉगिन सफल।', true);
+      } catch (error) { console.error('Mazdoor Sathi login:', error); msAuthMessage(msFriendlyAuthError(error)); }
+    }
+    async function startMsPasswordSignup(e) {
+      e.preventDefault();
+      const name = document.getElementById('custSignupName').value.trim();
+      const phone = document.getElementById('custSignupPhone').value.replace(/\D/g, '');
+      const password = document.getElementById('custSignupPassword').value;
+      const confirm = document.getElementById('custSignupPassword2').value;
+      if (!name || !/^\d{10}$/.test(phone)) return msAuthMessage('नाम और सही 10 अंकों का मोबाइल नंबर डालें।');
+      if (!/^\d{8}$/.test(password)) return msAuthMessage('पासवर्ड ठीक 8 अंकों का होना चाहिए।');
+      if (password !== confirm) return msAuthMessage('दोनों पासवर्ड एक जैसे नहीं हैं।');
+      try {
+        if (!msRequireHostedPage()) return;
+        if (!msFirebaseReady) throw msFirebaseInitError || new Error('Firebase तैयार नहीं है।');
+        msAuthMessage('Firebase में अकाउंट बनाया जा रहा है…', true);
+        const result = await msWithTimeout(msAuth.createUserWithEmailAndPassword(msPhoneEmail(phone), password), 'Firebase अकाउंट बनाना');
+        await result.user.updateProfile({ displayName: name });
+        localStorage.setItem('ms_auth_name', name);
+        msSetSignedInUser(result.user, name);
+        document.getElementById('custSignupPassword').value = '';
+        document.getElementById('custSignupPassword2').value = '';
+        msAuthMessage('अकाउंट बन गया और लॉगिन हो गया। अगली बार इसी मोबाइल और पासवर्ड से लॉगिन करें।', true);
+      } catch (error) { console.error('Mazdoor Sathi signup:', error); msAuthMessage(msFriendlyAuthError(error)); }
+    }
+    if (msAuth) msAuth.onAuthStateChanged(user => {
+      if (user) msSetSignedInUser(user);
+      else { state.customerUser = null; state.currentWorkerId = null; const overlay=document.getElementById('startLoginScreen'); if(overlay) overlay.classList.add('active'); }
+    }, error => {
+      console.error('Mazdoor Sathi auth state:', error);
+      msAuthMessage(msFriendlyAuthError(error));
+    });
+    if (!msFirebaseReady) {
+      window.addEventListener('DOMContentLoaded', () => msAuthMessage(msFriendlyAuthError(msFirebaseInitError || new Error('Firebase SDK लोड नहीं हुआ।'))));
+    }
+
+    // Toggle Language
+    function toggleLanguage() {
+      state.lang = state.lang === 'hi' ? 'en' : 'hi';
+      document.getElementById('langLabel').innerText = state.lang === 'hi' ? 'English' : 'हिंदी';
+      document.querySelectorAll('[data-t]').forEach(el => {
+        const key = el.getAttribute('data-t');
+        if (translations[state.lang][key]) {
+          el.innerText = translations[state.lang][key];
+        }
+      });
+      renderWorkers();
+      if (state.currentWorkerId) renderProfile(state.currentWorkerId);
+    }
+
+    // Navigation & History Arrows
+    function switchTab(tabName, pushHistory = true) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+      const targetSec = document.getElementById('sec-' + tabName);
+      if (targetSec) targetSec.classList.add('active');
+
+      const targetTab = document.getElementById('tab-' + tabName);
+      if (targetTab) targetTab.classList.add('active');
+
+      if (pushHistory && state.historyStack[state.historyIndex] !== tabName) {
+        state.historyStack = state.historyStack.slice(0, state.historyIndex + 1);
+        state.historyStack.push(tabName);
+        state.historyIndex++;
+        window.history.pushState({ tab: tabName }, '');
+      }
+    }
+
+    function goBack() {
+      if (state.historyIndex > 0) {
+        state.historyIndex--;
+        switchTab(state.historyStack[state.historyIndex], false);
+      }
+    }
+
+    function goForward() {
+      if (state.historyIndex < state.historyStack.length - 1) {
+        state.historyIndex++;
+        switchTab(state.historyStack[state.historyIndex], false);
+      }
+    }
+
+    // Prevent Mobile Back Button from Closing App Immediately
+    window.history.pushState({ tab: 'search' }, '');
+    window.addEventListener('popstate', function () {
+      if (state.historyIndex > 0) {
+        goBack();
+        window.history.pushState({ tab: state.historyStack[state.historyIndex] }, '');
+      } else {
+        switchTab('search', false);
+        window.history.pushState({ tab: 'search' }, '');
+      }
+    });
+
+    // Left / Right Touch Swipe Navigation Across Main Tabs
+    const tabOrder = ['search', 'register', 'khata'];
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const swipeArea = document.getElementById('swipeContainer');
+
+    swipeArea.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    swipeArea.addEventListener('touchend', (e) => {
+      const diffX = e.changedTouches[0].screenX - touchStartX;
+      const diffY = e.changedTouches[0].screenY - touchStartY;
+      if (Math.abs(diffX) > 65 && Math.abs(diffX) > Math.abs(diffY) * 1.4) {
+        const currentTab = state.historyStack[state.historyIndex];
+        const idx = tabOrder.indexOf(currentTab);
+        if (idx !== -1) {
+          if (diffX < 0 && idx < tabOrder.length - 1) {
+            switchTab(tabOrder[idx + 1]);
+          } else if (diffX > 0 && idx > 0) {
+            switchTab(tabOrder[idx - 1]);
+          }
+        }
+      }
+    }, { passive: true });
+
+    // Populate Categories
+    function renderCategories() {
+      const searchSel = document.getElementById('searchCategory');
+      const regSel = document.getElementById('regCategory');
+      const adminList = document.getElementById('adminCatList');
+
+      searchSel.innerHTML = '<option value="ALL">सभी श्रेणियां (All)</option>';
+      regSel.innerHTML = '';
+      adminList.innerHTML = '';
+
+      state.categories.forEach((cat, idx) => {
+        searchSel.innerHTML += `<option value="${cat}">${cat}</option>`;
+        regSel.innerHTML += `<option value="${cat}">${cat}</option>`;
+        adminList.innerHTML += `
+          <span style="background:#e2e8f0; padding:5px 10px; border-radius:8px; font-size:0.82rem; font-weight:600; display:inline-flex; align-items:center; gap:6px;">
+            ${cat} <b style="color:#dc2626; cursor:pointer;" onclick="removeCategory(${idx})">×</b>
+          </span>`;
+      });
+    }
+
+    function addCategory() {
+      const val = document.getElementById('newCatInput').value.trim();
+      if (!val) return;
+      state.categories.push(val);
+      document.getElementById('newCatInput').value = '';
+      saveData();
+      renderCategories();
+    }
+
+    function removeCategory(idx) {
+      if (state.categories.length <= 1) return alert('कम से कम एक श्रेणी ज़रूरी है।');
+      state.categories.splice(idx, 1);
+      saveData();
+      renderCategories();
+    }
+
+    // Render Workers List (Search by City OR PIN Code)
+    function renderWorkers() {
+      const cat = document.getElementById('searchCategory').value;
+      const query = document.getElementById('searchCity').value.trim().toLowerCase();
+      const list = document.getElementById('workersList');
+
+      const filtered = state.workers.filter(w => {
+        if (!w.available) return false;
+        if (cat !== 'ALL' && w.category !== cat) return false;
+        if (query) {
+          const matchCity = (w.city || '').toLowerCase().includes(query);
+          const matchPin = (w.pincode || '').toLowerCase().includes(query);
+          if (!matchCity && !matchPin) return false;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        list.innerHTML = `<div class="card" style="text-align:center; color:var(--muted);">इस शहर या PIN कोड पर कोई उपलब्ध कारीगर नहीं मिला।</div>`;
+        return;
+      }
+
+      list.innerHTML = filtered.map(w => `
+        <div class="worker-card">
+          <img src="${w.photo}" alt="${w.name}" class="worker-avatar" />
+          <div class="worker-info">
+            <div class="worker-name">${w.name} <small style="color:var(--muted); font-weight:600;">(${w.id})</small></div>
+            <div class="worker-badge">${w.category}</div>
+            <div class="worker-meta">
+              📍 ${w.city} ${w.pincode ? `(PIN: <b>${w.pincode}</b>)` : ''} &nbsp;|&nbsp; 💰 ₹${w.rate}/दिन
+            </div>
+            <a href="tel:${w.phone}" class="call-btn">📞 ${state.lang === 'hi' ? 'कॉल करें' : 'Call Now'}: ${w.phone}</a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Payment UI Sync
+    function syncPaymentUI() {
+      const payBox = document.getElementById('regPaymentBox');
+      const utrInput = document.getElementById('regUtr');
+      const toggle = document.getElementById('adminPayToggle');
+      const hint = document.getElementById('payStatusHint');
+
+      toggle.checked = state.paymentEnabled;
+      document.getElementById('displayFeeAmount').innerText = state.regFee;
+      document.getElementById('displayUpiId').innerText = state.upiId;
+      document.getElementById('adminFeeInput').value = state.regFee;
+      document.getElementById('adminUpiInput').value = state.upiId;
+
+      if (state.paymentEnabled) {
+        payBox.style.display = 'block';
+        utrInput.required = true;
+        hint.innerText = 'अभी चालू है (फीस अनिवार्य)';
+        hint.style.color = '#16a34a';
+      } else {
+        payBox.style.display = 'none';
+        utrInput.required = false;
+        hint.innerText = 'अभी बंद है (फ्री रजिस्ट्रेशन चालू)';
+        hint.style.color = '#dc2626';
+      }
+    }
+
+    function togglePaymentGateway() {
+      state.paymentEnabled = document.getElementById('adminPayToggle').checked;
+      saveData();
+      syncPaymentUI();
+    }
+
+    function savePaymentSettings() {
+      state.regFee = document.getElementById('adminFeeInput').value || '0';
+      state.upiId = document.getElementById('adminUpiInput').value.trim() || 'mazdoorsathi@upi';
+      saveData();
+      syncPaymentUI();
+      alert('पेमेंट सेटिंग सफलतापूर्वक सेव हो गई!');
+    }
+
+    // Register Worker (Includes PIN Code & Aadhaar / ID Proof)
+    function registerWorker(e) {
+      e.preventDefault();
+      const name = document.getElementById('regName').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const category = document.getElementById('regCategory').value;
+      const rate = document.getElementById('regRate').value;
+      const city = document.getElementById('regCity').value.trim();
+      const pincode = document.getElementById('regPincode').value.trim();
+      const aadhaar = document.getElementById('regAadhaar').value.trim();
+      const photoInput = document.getElementById('regPhoto');
+
+      const newId = 'MS-' + (1001 + state.workers.length);
+      const validDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+      const finishReg = (photoUrl) => {
+        const newWorker = {
+          id: newId,
+          name,
+          phone,
+          category,
+          rate,
+          city,
+          pincode,
+          aadhaar,
+          photo: photoUrl,
+          available: true,
+          validUntil: validDate
+        };
+        state.workers.unshift(newWorker);
+        state.currentWorkerId = newId;
+        localStorage.setItem('ms_logged_worker', newId);
+        saveData();
+        document.getElementById('regForm').reset();
+        renderWorkers();
+        alert(`रजिस्ट्रेशन सफल! आपका ID नंबर है: ${newId}`);
+        renderProfile(newId);
+        switchTab('profile');
+      };
+
+      if (photoInput.files && photoInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (ev) => finishReg(ev.target.result);
+        reader.readAsDataURL(photoInput.files[0]);
+      } else {
+        finishReg('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23dbeafe"/><circle cx="60" cy="44" r="22" fill="%231a3a8a"/><path d="M24 106c0-20 16-34 36-34s36 14 36 34" fill="%231a3a8a"/></svg>');
+      }
+    }
+
+    // Profile & Large ID Card
+    function openProfileModal() {
+      if (state.currentWorkerId) {
+        renderProfile(state.currentWorkerId);
+        switchTab('profile');
+      } else {
+        document.getElementById('profileModal').classList.add('active');
+      }
+    }
+
+    function loadWorkerProfile() {
+      const query = document.getElementById('profileSearchInput').value.trim().toUpperCase();
+      const worker = state.workers.find(w => w.id.toUpperCase() === query || w.phone === query);
+      if (!worker) {
+        alert('यह ID या मोबाइल नंबर नहीं मिला! कृपया सही जानकारी डालें (जैसे: MS-1001)');
+        return;
+      }
+      state.currentWorkerId = worker.id;
+      localStorage.setItem('ms_logged_worker', worker.id);
+      closeModals();
+      renderProfile(worker.id);
+      switchTab('profile');
+    }
+
+    function renderProfile(workerId) {
+      const w = state.workers.find(x => x.id === workerId);
+      if (!w) return;
+
+      const today = new Date();
+      const validDate = new Date(w.validUntil);
+      const diffTime = validDate - today;
+      const daysLeft = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+
+      const container = document.getElementById('profileContent');
+      container.innerHTML = `
+        <div class="id-card-box" id="printableIdCard">
+          <div class="id-card-header">
+            <h2>🛠️ मजदूर साथी (MAZDOOR SATHI)</h2>
+            <p>हर हाथ को काम • डिजिटल पहचान पत्र</p>
+          </div>
+          <div class="id-card-body">
+            <img src="${w.photo}" alt="${w.name}" class="id-photo" />
+            <div class="id-number-tag">ID: ${w.id}</div>
+            <h3 style="font-size:1.35rem; color:#0f172a; margin-bottom:6px;">${w.name}</h3>
+            <table class="id-details-table">
+              <tr><td>काम की श्रेणी:</td><td>${w.category}</td></tr>
+              <tr><td>मोबाइल नंबर:</td><td>${w.phone}</td></tr>
+              <tr><td>रोज़ाना रेट:</td><td>₹${w.rate} / दिन</td></tr>
+              <tr><td>शहर / पता:</td><td>${w.city} ${w.pincode ? `(PIN: ${w.pincode})` : ''}</td></tr>
+              <tr><td>आधार / ID प्रूफ:</td><td>${w.aadhaar || 'सत्यापित (Verified)'}</td></tr>
+              <tr><td>ID वैलिडिटी:</td><td>${w.validUntil} तक</td></tr>
+            </table>
+            <div class="validity-banner ${daysLeft === 0 ? 'expired' : ''}">
+              ${daysLeft > 0 ? `✅ सक्रिय कार्ड: साल में <strong>${daysLeft} दिन</strong> शेष बचे हैं` : '❌ वैलिडिटी समाप्त हो गई है'}
+            </div>
+          </div>
+        </div>
+
+        <button class="status-toggle-btn ${w.available ? 'online' : 'offline'}" onclick="toggleWorkerStatus('${w.id}')">
+          ${w.available ? '🟢 ON: अभी काम के लिए उपलब्ध (दबाकर Block करें)' : '🔴 OFF: अभी व्यस्त / Blocked (दबाकर Unblock करें)'}
+        </button>
+
+        <div class="row-2">
+          <button class="btn-primary" style="margin-top:0;" onclick="window.print()">🖨️ ID कार्ड प्रिंट / सेव करें</button>
+          <button class="btn-success" onclick="renewValidity('${w.id}')">🔄 +1 साल वैलिडिटी बढ़ाएं</button>
+        </div>
+      `;
+    }
+
+    function toggleWorkerStatus(workerId) {
+      const w = state.workers.find(x => x.id === workerId);
+      if (!w) return;
+      w.available = !w.available;
+      saveData();
+      renderProfile(workerId);
+      renderWorkers();
+    }
+
+    function renewValidity(workerId) {
+      const w = state.workers.find(x => x.id === workerId);
+      if (!w) return;
+      if (state.paymentEnabled) {
+        const utr = prompt(`वार्षिक रिन्यूअल फीस ₹${state.regFee} (UPI: ${state.upiId}) जमा करके UTR नंबर डालें:`);
+        if (!utr || utr.trim().length < 4) return alert('रिन्यूअल के लिए सही UTR नंबर ज़रूरी है।');
+      }
+      const nextYear = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+      w.validUntil = nextYear;
+      saveData();
+      renderProfile(workerId);
+      alert('बधाई हो! आपका ID कार्ड अगले 365 दिनों के लिए अपडेट हो गया है।');
+    }
+
+    async function logoutUser() {
+      try {
+        if (msAuth && msFirebaseReady) await msAuth.signOut();
+        state.currentWorkerId = null; state.customerUser = null;
+        localStorage.removeItem('ms_logged_worker');
+        localStorage.removeItem('ms_customer_user');
+        switchTab('search', false);
+        document.getElementById('startLoginScreen').classList.add('active');
+        showMsAuthMode('login');
+        msAuthMessage('आप सफलतापूर्वक लॉगआउट हो गए हैं।', true);
+      } catch (error) { alert(msFriendlyAuthError(error)); }
+    }
+
+    // Khata Functions
+    function addKhataEntry(e) {
+      e.preventDefault();
+      const name = document.getElementById('khataName').value.trim();
+      const date = document.getElementById('khataDate').value;
+      const att = parseFloat(document.getElementById('khataAtt').value);
+      const amount = parseFloat(document.getElementById('khataAmount').value) || 0;
+
+      state.khata.unshift({ name, date, att, amount });
+      saveData();
+      renderKhata();
+      document.getElementById('khataName').value = '';
+      document.getElementById('khataAmount').value = '0';
+    }
+
+    function renderKhata() {
+      let totalDays = 0;
+      let totalPaid = 0;
+      state.khata.forEach(item => {
+        totalDays += item.att;
+        totalPaid += item.amount;
+      });
+      document.getElementById('khataTotalDays').innerText = totalDays;
+      document.getElementById('khataTotalPaid').innerText = '₹' + totalPaid;
+
+      const list = document.getElementById('khataHistoryList');
+      if (state.khata.length === 0) {
+        list.innerHTML = 'अभी कोई रिकॉर्ड दर्ज नहीं है।';
+        return;
+      }
+      list.innerHTML = state.khata.map(item => `
+        <div style="padding:10px 0; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between;">
+          <div>
+            <strong>${item.name}</strong><br/>
+            <small>${item.date} • हाजिरी: ${item.att} दिन</small>
+          </div>
+          <div style="font-weight:800; color:var(--success);">₹${item.amount}</div>
+        </div>
+      `).join('');
+    }
+
+    // Hidden Admin 5-Tap Trigger
+    let tapCount = 0;
+    let tapTimer = null;
+    document.getElementById('brandLogo').addEventListener('click', () => {
+      tapCount++;
+      clearTimeout(tapTimer);
+      tapTimer = setTimeout(() => { tapCount = 0; }, 1500);
+      if (tapCount >= 5) {
+        tapCount = 0;
+        document.getElementById('adminModal').classList.add('active');
+      }
+    });
+
+    function verifyAdmin() {
+      const entered = document.getElementById('adminPassInput').value;
+      if (entered === state.adminPass) {
+        document.getElementById('adminPassInput').value = '';
+        closeModals();
+        switchTab('admin');
+      } else {
+        alert('गलत पासवर्ड! कृपया सही एडमिन पासवर्ड डालें।');
+      }
+    }
+
+    function changeAdminPassword() {
+      const newPass = document.getElementById('newAdminPass').value.trim();
+      if (newPass.length < 4) return alert('पासवर्ड कम से कम 4 अक्षरों या अंकों का होना चाहिए।');
+      state.adminPass = newPass;
+      document.getElementById('newAdminPass').value = '';
+      saveData();
+      alert('एडमिन पासवर्ड सफलतापूर्वक बदल दिया गया है!');
+    }
+
+    function closeModals() {
+      document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+    }
+
+    // Initialize App
+    document.getElementById('khataDate').valueAsDate = new Date();
+    checkCustomerLogin();
+    renderCategories();
+    renderWorkers();
+    renderKhata();
+    syncPaymentUI();
+  </script>
+</body>
+</html><script async src="/.netlify/scripts/hud?variant=public" data-nf-variant="public" data-netlify-site-id="80112628-9e74-4159-a4e2-ddf0dfc0b5f6" data-app-host="app.netlify.com" data-account-tier="free"></script>
