@@ -1,0 +1,2234 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=80112628-9e74-4159-a4e2-ddf0dfc0b5f6
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>मजदूर साथी - हर हाथ को काम</title>
+  <style>
+    :root {
+      --primary: #1a3a8a;
+      --primary-dark: #10255e;
+      --accent: #f59e0b;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #cbd5e1;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 40px; overflow-x: hidden; }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      padding: 14px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .brand { cursor: pointer; user-select: none; }
+    .brand h1 { font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 6px; }
+    .brand p { font-size: 0.75rem; color: #cbd5e1; margin-top: 2px; }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-arrow {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+      border-radius: 8px;
+      width: 34px;
+      height: 34px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-arrow:active { background: rgba(255,255,255,0.35); }
+    .lang-btn {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .header-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .btn-profile {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(245, 158, 11, 0.35);
+    }
+    .btn-logout {
+      background: var(--danger);
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(220, 38, 38, 0.35);
+    }
+
+    /* Top Tabs Bar */
+    .top-tabs-wrapper {
+      max-width: 600px;
+      margin: 12px auto 0;
+      padding: 0 12px;
+    }
+    .top-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      background: #ffffff;
+      padding: 6px;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border: 1px solid #e2e8f0;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 10px 6px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+    .tab-btn span.icon { font-size: 1.2rem; }
+    .tab-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(26, 58, 138, 0.3);
+    }
+
+    /* Container & Sections */
+    .container { max-width: 600px; margin: 12px auto; padding: 0 12px; touch-action: pan-y; }
+    .section { display: none; animation: fadeSlide 0.22s ease; }
+    .section.active { display: block; }
+    @keyframes fadeSlide {
+      from { opacity: 0.4; transform: translateX(8px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      border: 1px solid #e2e8f0;
+    }
+    .card-title {
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Form Elements */
+    .form-group { margin-bottom: 12px; }
+    label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 5px; color: #334155; }
+    input, select, textarea {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      background: #fff;
+      color: var(--text);
+    }
+    input:focus, select:focus { outline: none; border-color: var(--primary); }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .btn-primary {
+      width: 100%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+    .btn-success {
+      width: 100%;
+      background: var(--success);
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Worker List Cards */
+    .worker-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+      background: #fff;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .worker-avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 2px solid var(--primary);
+      flex-shrink: 0;
+      background: #e2e8f0;
+    }
+    .worker-info { flex: 1; min-width: 0; }
+    .worker-name { font-weight: 800; font-size: 1.05rem; color: #0f172a; }
+    .worker-badge {
+      display: inline-block;
+      background: #dbeafe;
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin: 4px 0;
+    }
+    .worker-meta { font-size: 0.82rem; color: var(--muted); line-height: 1.4; }
+    .call-btn {
+      display: inline-block;
+      margin-top: 8px;
+      background: var(--success);
+      color: #fff;
+      text-decoration: none;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    /* Large Digital ID Card */
+    .id-card-box {
+      background: linear-gradient(145deg, #ffffff, #f8fafc);
+      border: 3px solid var(--primary);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(26, 58, 138, 0.15);
+      margin-bottom: 14px;
+    }
+    .id-card-header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      padding: 14px;
+      text-align: center;
+      border-bottom: 4px solid var(--accent);
+    }
+    .id-card-header h2 { font-size: 1.3rem; font-weight: 900; letter-spacing: 0.5px; }
+    .id-card-header p { font-size: 0.8rem; color: #fde68a; font-weight: 600; }
+    .id-card-body { padding: 18px; text-align: center; }
+    .id-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 16px;
+      object-fit: cover;
+      border: 3px solid var(--primary);
+      margin: 0 auto 12px;
+      display: block;
+      background: #e2e8f0;
+    }
+    .id-number-tag {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 5px 16px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+    .id-details-table {
+      width: 100%;
+      text-align: left;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 0.92rem;
+    }
+    .id-details-table td {
+      padding: 7px 6px;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+    .id-details-table td:first-child { font-weight: 700; color: var(--muted); width: 42%; }
+    .id-details-table td:last-child { font-weight: 700; color: #0f172a; }
+    .validity-banner {
+      margin-top: 14px;
+      background: #ecfdf5;
+      border: 1.5px solid #10b981;
+      border-radius: 12px;
+      padding: 10px;
+      color: #065f46;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .validity-banner.expired {
+      background: #fef2f2;
+      border-color: #ef4444;
+      color: #991b1b;
+    }
+
+    /* Status Toggle Button below ID */
+    .status-toggle-btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 14px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fff;
+      cursor: pointer;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: transform 0.1s;
+    }
+    .status-toggle-btn.online { background: var(--success); }
+    .status-toggle-btn.offline { background: var(--danger); }
+
+    /* Stats Boxes */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .stat-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+    .stat-box span { display: block; font-size: 0.8rem; color: var(--muted); font-weight: 700; }
+    .stat-box strong { display: block; font-size: 1.35rem; color: #0f172a; margin-top: 4px; }
+
+    /* Switch Toggle for Admin */
+    .switch-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #cbd5e1;
+      margin-bottom: 12px;
+    }
+    .switch { position: relative; display: inline-block; width: 52px; height: 28px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #cbd5e1; transition: .3s; border-radius: 28px;
+    }
+    .slider:before {
+      position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px;
+      background-color: white; transition: .3s; border-radius: 50%;
+    }
+    input:checked + .slider { background-color: var(--success); }
+    input:checked + .slider:before { transform: translateX(24px); }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.72);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal.active { display: flex; }
+    .modal-content {
+      background: #fff;
+      border-radius: 18px;
+      padding: 20px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+
+    /* Starting Customer Login Overlay */
+    .start-login-overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      z-index: 300;
+      /* Show login immediately; Firebase hides it only after confirming a signed-in user. */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .start-login-overlay.active { display: flex; }
+    .start-login-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 24px 20px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      #printableIdCard, #printableIdCard * { visibility: visible; }
+      #printableIdCard { position: absolute; left: 0; top: 0; width: 100%; }
+    }
+
+    /* Additive worker profile, ID popup and directory enhancements */
+    .ms-ticker{overflow:hidden;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:9px;margin:0 0 12px;color:#1e3a8a;font-weight:700;white-space:nowrap}
+    .ms-ticker-track{display:inline-block;min-width:100%;animation:msTicker 24s linear infinite}
+    @keyframes msTicker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+    .ms-green-btn{background:#16a34a;color:#fff;border:0;border-radius:7px;padding:5px 8px;font-size:12px;line-height:1.2;font-weight:800;cursor:pointer;white-space:nowrap}
+    .ms-red-update{background:#dc2626;color:#fff;border:0;border-radius:10px;padding:12px;width:100%;font-weight:900;cursor:pointer;margin-top:8px}
+    .ms-red-update:disabled{background:#94a3b8;cursor:not-allowed}
+    .ms-id-popup{position:fixed;inset:0;background:rgba(15,23,42,.86);z-index:500;display:none;align-items:center;justify-content:center;padding:10px}
+    .ms-id-popup.active{display:flex}
+    .ms-id-popup-inner{width:min(960px,100%);max-height:96vh;overflow:auto;background:#fff;border-radius:16px;padding:12px;position:relative}
+    .ms-id-popup-close{position:sticky;top:0;float:right;z-index:2;background:#dc2626;color:#fff;border:0;border-radius:50%;width:38px;height:38px;font-size:22px;font-weight:900;cursor:pointer}
+    .ms-id-popup-inner .id-card-box{max-width:760px;margin:0 auto 8px}
+    .ms-profile-editor{background:#fff;border:1px solid #cbd5e1;border-radius:15px;padding:15px;margin-top:14px}
+    .ms-profile-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+    .ms-profile-top strong{font-size:1.08rem;color:#1e3a8a}
+    .ms-pin-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+    .ms-pin-row label{margin:0}
+    .ms-directory-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;border-bottom:1px solid #e2e8f0}
+    .ms-directory-row:last-child{border-bottom:0}
+    .ms-directory-row small{display:block;color:#64748b;margin-top:3px}
+    @media(max-width:480px){.ms-profile-top{align-items:stretch}.ms-profile-top .ms-green-btn{width:100%}.ms-directory-row{align-items:flex-start}.ms-id-popup-inner{padding:8px}.ms-id-popup-inner .id-card-body{padding:12px}}
+
+
+    /* Corrected compact profile and mobile-safe ID preview */
+    .ms-profile-editor{background:#fff;border:1px solid #cbd5e1;border-radius:14px;padding:12px;margin:0;box-shadow:0 2px 8px rgba(15,23,42,.05)}
+    .ms-profile-top{margin-bottom:8px}
+    .ms-profile-idrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 10px;margin-bottom:10px;background:#eff6ff;border-radius:10px;border:1px solid #bfdbfe}
+    .ms-id-number{font-size:1.05rem;font-weight:900;color:#1e3a8a;letter-spacing:.3px}
+    .ms-green-tick{display:inline-flex;align-items:center;justify-content:center;width:23px;height:23px;border-radius:50%;background:#16a34a;color:white;font-weight:900}
+    .ms-profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+    .ms-profile-grid .form-group{margin-bottom:7px;min-width:0}
+    .ms-profile-grid input,.ms-profile-grid select{padding:9px 8px;font-size:.88rem;min-width:0}
+    .ms-profile-form .ms-red-update{margin-top:5px;padding:10px}
+    .ms-worker-result{background:#fff;border:1px solid #e2e8f0;border-radius:12px;margin:0 0 9px;padding:10px 12px;min-height:56px}
+    .ms-worker-label{display:flex;align-items:center;gap:9px;flex-wrap:wrap;min-width:0}
+    .ms-worker-label strong{font-size:1rem;color:#0f172a}
+    .ms-worker-label span{font-size:.82rem;font-weight:700;color:#1e3a8a;background:#dbeafe;border-radius:7px;padding:4px 8px}
+    .ms-id-popup{padding:8px}
+    .ms-id-popup-inner{width:min(440px,100%);max-height:92dvh;overflow:auto;padding:8px;border-radius:12px;box-sizing:border-box}
+    .ms-id-popup-inner .id-card-box{width:100%;max-width:100%;margin:0 auto 4px;box-sizing:border-box;border-width:2px}
+    .ms-id-popup-inner .id-card-header{padding:9px 7px}
+    .ms-id-popup-inner .id-card-header h2{font-size:1rem;letter-spacing:0}
+    .ms-id-popup-inner .id-card-header p{font-size:.7rem}
+    .ms-id-popup-inner .id-card-body{padding:9px}
+    .ms-id-popup-inner .id-photo{width:82px;height:82px;margin-bottom:7px}
+    .ms-id-popup-inner .id-number-tag{font-size:.8rem;padding:5px 8px}
+    .ms-id-popup-inner .id-card-body h3{font-size:1.05rem!important}
+    .ms-id-popup-inner .id-details-table{font-size:.76rem;width:100%;table-layout:fixed;overflow-wrap:anywhere}
+    .ms-id-popup-inner .id-details-table td{padding:4px 3px;overflow-wrap:anywhere}
+    .ms-id-popup-inner .validity-banner{padding:7px;font-size:.76rem}
+    @media(max-width:380px){.ms-profile-grid{gap:0 6px}.ms-profile-grid input,.ms-profile-grid select{font-size:.8rem;padding:8px 6px}.ms-profile-idrow{gap:5px}.ms-id-popup-inner .id-details-table{font-size:.69rem}}
+
+  </style>
+</head>
+<body>
+
+  <!-- Starting Customer Login Overlay -->
+  <div class="start-login-overlay" id="startLoginScreen">
+    <div class="start-login-card">
+      <div style="font-size: 2.5rem; margin-bottom: 6px;">🛠️</div>
+      <h2 style="color: var(--primary); font-size: 1.45rem; font-weight: 900;">मजदूर साथी में स्वागत है</h2>
+      <p style="color: var(--muted); font-size: 0.88rem; margin: 4px 0 18px;">पहली बार अपना पासवर्ड बनाएँ। पहले से खाता है तो लॉगिन करें।</p>
+      <form onsubmit="handleCustomerLogin(event)" style="text-align: left;">
+        <div class="form-group" id="loginNameGroup">
+          <label>आपका पूरा नाम *</label>
+          <input type="text" id="custLoginName" required maxlength="60" placeholder="जैसे: राजेश शर्मा" />
+        </div>
+        <div class="form-group">
+          <label>मोबाइल नंबर (10 अंक) *</label>
+          <input type="tel" id="custLoginPhone" required inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10 अंकों का मोबाइल नंबर" />
+        </div>
+        <div class="form-group">
+          <label>लॉगिन पासवर्ड *</label>
+          <input type="password" id="custLoginPassword" required minlength="8" maxlength="8" inputmode="numeric" pattern="[0-9]{8}" autocomplete="current-password" placeholder="8 अंकों का पासवर्ड" />
+        </div>
+        <div class="form-group" id="loginConfirmGroup">
+          <label>पासवर्ड दोबारा लिखें *</label>
+          <input type="password" id="custLoginPasswordConfirm" minlength="8" maxlength="8" inputmode="numeric" pattern="[0-9]{8}" autocomplete="new-password" placeholder="पासवर्ड की पुष्टि करें" />
+        </div>
+        <button type="submit" id="customerLoginSubmit" class="btn-primary" style="font-size: 1.05rem; padding: 14px;">🔐 नया खाता बनाएँ</button>
+        <button type="button" id="customerLoginModeToggle" onclick="toggleCustomerLoginMode()" style="width:100%;margin-top:10px;background:transparent;border:0;color:var(--primary);font-weight:800;">पहले से खाता है? लॉगिन करें</button>
+        <p id="customerLoginMessage" role="status" style="font-size:.82rem;color:var(--muted);margin-top:10px;"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Header (Exact Same Two Buttons: Profile & Logout) -->
+  <header class="header">
+    <div class="header-top">
+      <div class="brand" id="brandLogo" title="मजदूर साथी">
+        <h1>🛠️ <span data-t="appTitle">मजदूर साथी</span></h1>
+        <p data-t="appTagline">हर हाथ को काम</p>
+      </div>
+      <div class="header-controls">
+        <button class="nav-arrow" onclick="goBack()" title="पिछला पेज">⬅️</button>
+        <button class="nav-arrow" onclick="goForward()" title="अगला पेज">➡️</button>
+        <button class="lang-btn" onclick="toggleLanguage()">🌐 <span id="langLabel">English</span></button>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-profile" onclick="openProfileModal()">🪪 <span data-t="myProfile">मेरी प्रोफाइल</span></button>
+      <button class="btn-logout" onclick="logoutUser()">🚪 <span data-t="logout">लॉगआउट</span></button>
+    </div>
+  </header>
+  <div id="msConnectionPanel" style="display:none;margin:10px auto;max-width:980px;padding:10px 14px;border:1px solid #bfdbfe;border-radius:12px;background:#eff6ff;color:#1e3a8a;">
+    <div style="font-weight:900;margin-bottom:6px;">🔔 कनेक्शन नोटिफिकेशन</div>
+    <div id="msConnectionPanelContent" style="font-size:13px;line-height:1.5;"></div>
+  </div>
+
+
+  <!-- Navigation Tabs Moved Right Below Header -->
+  <div class="top-tabs-wrapper">
+    <nav class="top-tabs">
+      <button class="tab-btn active" id="tab-search" onclick="switchTab('search')">
+        <span class="icon">🔍</span>
+        <span data-t="tabSearch">खोजें</span>
+      </button>
+      <button class="tab-btn" id="tab-register" onclick="switchTab('register')">
+        <span class="icon">📝</span>
+        <span data-t="tabRegister">रजिस्ट्रेशन</span>
+      </button>
+      <button class="tab-btn" id="tab-khata" onclick="switchTab('khata')">
+        <span class="icon">📒</span>
+        <span data-t="tabKhata">खाता</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Main Content (Swipe Enabled) -->
+  <main class="container" id="swipeContainer">
+
+    <!-- 1. SEARCH SECTION -->
+    <section id="sec-search" class="section active">
+      <div class="card">
+        <div class="card-title">🔍 <span data-t="findWorkerTitle">कारीगर / मजदूर खोजें</span></div><p style="font-size:13px;color:var(--muted);margin:0 0 10px;">मालिक काम की श्रेणी और 6 अंकों का PIN डालकर मजदूर खोजें। कनेक्शन मजदूर की मंजूरी के बाद ही बनेगा।</p>
+        <div class="row-2">
+          <div class="form-group">
+            <label data-t="filterCategory">काम की श्रेणी</label>
+            <select id="searchCategory" onchange="renderWorkers()">
+              <option value="ALL">सभी श्रेणियां (All)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label data-t="filterCity">शहर / इलाका / PIN Code</label>
+            <input type="text" id="searchCity" placeholder="6 अंकों का PIN Code डालें" oninput="renderWorkers()" />
+          </div>
+        </div>
+      </div>
+      <div id="workersList"></div>
+    </section>
+
+    <!-- 2. REGISTRATION SECTION -->
+    <section id="sec-register" class="section">
+      <div class="card">
+        <div class="card-title">📝 <span data-t="regTitle">नया कारीगर रजिस्ट्रेशन</span></div>
+        <form id="regForm" onsubmit="registerWorker(event)">
+          <div class="form-group">
+            <label data-t="fullName">पूरा नाम *</label>
+            <input type="text" id="regName" required placeholder="जैसे: रमेश कुमार" />
+          </div>
+          <div class="row-2">
+            <div class="form-group">
+              <label data-t="mobileNum">मोबाइल नंबर *</label>
+              <input type="tel" id="regPhone" required pattern="[0-9]{10}" maxlength="10" placeholder="10 अंकों का नंबर" />
+            </div>
+            <div class="form-group">
+              <label data-t="workCategory">काम की श्रेणी *</label>
+              <select id="regCategory" required></select>
+            </div>
+          </div>
+          <div class="row-2">
+            <div class="form-group">
+              <label data-t="dailyRate">रोज़ाना रेट (₹) *</label>
+              <input type="number" id="regRate" required placeholder="जैसे: 600" />
+            </div>
+            <div class="form-group">
+              <label data-t="cityArea">शहर / गांव *</label>
+              <input type="text" id="regCity" required placeholder="जैसे: पटना / दिल्ली" />
+            </div>
+          </div>
+          <div class="row-2">
+            <div class="form-group">
+              <label data-t="pinCodeLabel">पिन कोड (PIN Code) *</label>
+              <input type="tel" id="regPincode" required pattern="[0-9]{6}" maxlength="6" placeholder="6 अंकों का PIN" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label data-t="uploadPhoto">फोटो अपलोड करें (ID कार्ड के लिए)</label>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button type="button" class="btn-primary photo-choice-btn" style="margin-top:0;flex:0 1 auto;padding:3px 7px;font-size:10px;min-height:26px;" onclick="document.getElementById('regPhotoCamera').click()">📷 कैमरा खोलें</button>
+              <button type="button" class="btn-success photo-choice-btn" style="margin-top:0;flex:0 1 auto;padding:3px 7px;font-size:10px;min-height:26px;" onclick="document.getElementById('regPhotoGallery').click()">🖼️ गैलरी से चुनें</button>
+            </div>
+            <input type="file" id="regPhotoCamera" accept="image/*" capture="environment" style="display:none" onchange="selectRegistrationPhoto(this)" />
+            <input type="file" id="regPhotoGallery" accept="image/*" style="display:none" onchange="selectRegistrationPhoto(this)" />
+            <div id="regPhotoSelection" style="font-size:12px;color:#475569;margin-top:6px;">अभी कोई फोटो नहीं चुनी गई है</div>
+          </div>
+
+          <!-- Payment Box -->
+          <div id="regPaymentBox" style="background:#fffbeb; border:1.5px solid #f59e0b; padding:12px; border-radius:12px; margin-bottom:12px;">
+            <div style="font-weight:800; color:#b45309; margin-bottom:6px;">
+              💳 <span data-t="regFeeLabel">वार्षिक रजिस्ट्रेशन शुल्क:</span> ₹<span id="displayFeeAmount">99</span>
+            </div>
+            <div style="font-size:0.82rem; color:#78350f; margin-bottom:8px;">
+              UPI ID: <strong id="displayUpiId">mazdoorsathi@upi</strong>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label data-t="utrLabel">पेमेंट UTR / रेफरेंस नंबर *</label>
+              <input type="text" id="regUtr" placeholder="12 अंकों का UTR नंबर डालें" />
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary">✅ <span data-t="submitReg">रजिस्ट्रेशन पूरा करें</span></button>
+        </form>
+      </div>
+    </section>
+
+    <!-- 3. KHATA & ATTENDANCE SECTION -->
+    <section id="sec-khata" class="section">
+      <div class="card">
+        <div class="card-title">📒 <span data-t="khataTitle">खाता और हाजिरी रजिस्टर</span></div>
+        <p id="khataAccountIdentity" style="margin:6px 0 12px;font-weight:800;color:var(--primary);">लॉगिन के अनुसार खाता</p>
+        <input type="hidden" id="khataName" value="मेरा खाता" />
+        <div class="stats-grid">
+          <div class="stat-box" role="button" tabindex="0" style="cursor:pointer;" onclick="openKhataModal('work')" onkeydown="if(event.key==='Enter'||event.key===' ')openKhataModal('work')">
+            <span data-t="totalDays">कुल काम (दिन)</span><strong id="khataTotalDays">0</strong>
+          </div>
+          <div class="stat-box" role="button" tabindex="0" style="cursor:pointer;" onclick="openKhataModal('payment')" onkeydown="if(event.key==='Enter'||event.key===' ')openKhataModal('payment')">
+            <span data-t="totalPaid">कुल भुगतान (₹)</span><strong id="khataTotalPaid">₹0</strong>
+          </div>
+        </div>
+      </div>
+      <div id="khataModal" class="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.48);z-index:9999;align-items:center;justify-content:center;padding:14px;">
+        <div class="card" style="width:100%;max-width:360px;max-height:85vh;overflow:auto;margin:0;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;">
+            <strong id="khataModalTitle">कुल काम</strong>
+            <button type="button" class="btn-secondary" onclick="closeKhataModal()" style="padding:5px 10px;">✕</button>
+          </div>
+          <div style="margin-bottom:12px;">
+            <label for="khataOwnerName" id="khataPersonLabel" style="display:block;font-weight:700;margin-bottom:5px;">खाते का नाम</label>
+            <input type="text" id="khataOwnerName" placeholder="नाम अपने आप आएगा" style="width:100%;" />
+          </div>
+          <div id="khataOwnerWorkerSelect" style="display:none;margin-bottom:12px;">
+            <label for="khataTargetWorker" style="display:block;font-weight:700;margin-bottom:5px;">मजदूर चुनें</label>
+            <select id="khataTargetWorker" style="width:100%;" onchange="onKhataTargetWorkerChange()"><option value="">मजदूर चुनें</option></select>
+          </div>
+          <div id="khataWorkControls" style="display:none;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;">
+              <button type="button" class="btn-secondary" onclick="changeKhataMonth(-1)" style="padding:6px 10px;">‹ पिछला</button>
+              <strong id="khataMonthLabel"></strong>
+              <button type="button" class="btn-secondary" onclick="changeKhataMonth(1)" style="padding:6px 10px;">अगला ›</button>
+            </div>
+            <div id="khataCalendar" style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center;"></div>
+            <div style="margin-top:12px;text-align:center;"><button type="button" class="btn-primary" onclick="saveKhataWork()">◯ ✓ हाजिरी लगाएं</button></div>
+          </div>
+          <div id="khataPaymentControls" style="display:none;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;">
+              <button type="button" class="btn-secondary" onclick="changeKhataMonth(-1)" style="padding:6px 10px;">‹ पिछला</button>
+              <strong id="khataPaymentMonthLabel"></strong>
+              <button type="button" class="btn-secondary" onclick="changeKhataMonth(1)" style="padding:6px 10px;">अगला ›</button>
+            </div>
+            <label for="khataPaymentDate">भुगतान की तारीख</label>
+            <input type="date" id="khataPaymentDate" style="width:100%;margin:6px 0 10px;" />
+            <label for="khataPaymentAmount">भुगतान राशि (₹)</label>
+            <input type="number" id="khataPaymentAmount" min="1" step="0.01" placeholder="राशि लिखें" style="width:100%;margin:6px 0 12px;" />
+            <button type="button" class="btn-primary" onclick="saveKhataPayment()">◯ ✓ भुगतान सेव करें</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title" role="button" tabindex="0" style="display:inline-block;cursor:pointer;background:#2563eb;color:#ffffff;padding:6px 10px;border-radius:7px;margin-bottom:8px;font-size:13px;line-height:1.2;" onclick="openKhataHistory()" onkeydown="if(event.key==='Enter'||event.key===' ')openKhataHistory()">📜 <span data-t="historyTitle">महीनेवार हिस्ट्री देखें</span></div>
+        <div id="khataHistoryList" style="font-size:0.88rem;color:var(--muted);">हिस्ट्री देखने के लिए ऊपर क्लिक करें।</div>
+      </div>
+      <div id="khataHistoryModal" class="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:10000;align-items:center;justify-content:center;padding:14px;">
+        <div class="card" style="width:100%;max-width:380px;max-height:85vh;overflow:auto;margin:0;">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px;">
+            <strong>📜 महीनेवार काम और भुगतान हिस्ट्री</strong>
+            <button type="button" class="btn-secondary" onclick="closeKhataHistory()" style="padding:5px 10px;">✕</button>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;">
+            <button type="button" class="btn-secondary" onclick="changeKhataHistoryMonth(-1)" style="padding:6px 10px;">‹ पिछला</button>
+            <strong id="khataHistoryMonthLabel"></strong>
+            <button type="button" class="btn-secondary" onclick="changeKhataHistoryMonth(1)" style="padding:6px 10px;">अगला ›</button>
+          </div>
+          <div id="khataHistoryContent"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. WORKER PROFILE & LARGE ID CARD SECTION -->
+    <section id="sec-profile" class="section">
+      <div id="profileContent"></div>
+    </section>
+
+    <!-- 5. HIDDEN ADMIN PANEL SECTION -->
+    <section id="sec-admin" class="section">
+      <div class="card">
+        <div class="card-title">🛡️ <span data-t="adminPanelTitle">एडमिन कंट्रोल पैनल</span></div>
+
+        <div class="card" style="margin:14px 0; border:2px solid #0d9488;">
+          <button type="button" class="btn-success" id="msRegisteredMembersBtn" onclick="toggleRegisteredMembers()" style="width:100%;background:linear-gradient(135deg,#0f766e,#0891b2);color:#fff;font-weight:700;">
+            👥 रजिस्टर्ड मेंबर (0)
+          </button>
+          <div id="msRegisteredMembersList" style="display:none;margin-top:12px;"></div>
+        </div>
+
+        <div class="switch-row">
+          <div>
+            <strong style="display:block; font-size:0.95rem;" data-t="payGatewayToggle">पेमेंट गेटवे (Registration Fee)</strong>
+            <small style="color:var(--muted);" id="payStatusHint">अभी चालू है (फीस अनिवार्य)</small>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="adminPayToggle" checked onchange="togglePaymentGateway()" />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="row-2">
+          <div class="form-group">
+            <label data-t="feeSetting">रजिस्ट्रेशन फीस (₹)</label>
+            <input type="number" id="adminFeeInput" value="99" />
+          </div>
+          <div class="form-group">
+            <label>UPI ID</label>
+            <input type="text" id="adminUpiInput" value="mazdoorsathi@upi" />
+          </div>
+        </div>
+        <button class="btn-success" onclick="savePaymentSettings()" style="margin-bottom:16px;">💾 <span data-t="savePaySettings">पेमेंट सेटिंग सेव करें</span></button>
+
+        <div style="border-top:1px solid #e2e8f0; padding-top:14px; margin-bottom:16px;">
+          <label>🔑 <span data-t="changePassLabel">नया एडमिन पासवर्ड बदलें</span></label>
+          <div class="row-2">
+            <input type="password" id="newAdminPass" placeholder="नया पासवर्ड लिखें" />
+            <button class="btn-primary" style="margin-top:0;" onclick="changeAdminPassword()" data-t="updatePassBtn">पासवर्ड अपडेट करें</button>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid #e2e8f0; padding-top:14px;">
+          <label>📂 <span data-t="manageCatLabel">मैनुअल काम की श्रेणी जोड़ें</span></label>
+          <div class="row-2" style="margin-bottom:10px;">
+            <input type="text" id="newCatInput" placeholder="जैसे: प्लंबर / पेंटर" />
+            <button class="btn-primary" style="margin-top:0;" onclick="addCategory()" data-t="addCatBtn">+ श्रेणी जोड़ें</button>
+          </div>
+          <div id="adminCatList" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Profile Login Modal -->
+  <div class="modal" id="profileModal">
+    <div class="modal-content">
+      <h3 style="margin-bottom:10px; color:var(--primary);">🪪 <span data-t="openProfileHead">अपनी प्रोफाइल और ID खोलें</span></h3>
+      <p style="font-size:0.85rem; color:var(--muted); margin-bottom:12px;">अपना रजिस्टर्ड 10 अंकों का मोबाइल नंबर डालें:</p>
+      <input type="tel" inputmode="numeric" maxlength="10" id="profileSearchInput" placeholder="10 अंकों का मोबाइल नंबर" style="margin-bottom:12px;" />
+      <div class="row-2">
+        <button class="btn-primary" style="margin-top:0;" onclick="loadWorkerProfile()">प्रोफाइल खोलें</button>
+        <button class="btn-logout" onclick="closeModals()" data-t="cancelBtn">बंद करें</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full-screen worker ID preview (additive; original ID card markup remains unchanged) -->
+  <div class="ms-id-popup" id="msIdPopup" onclick="if(event.target===this)closeWorkerIdPopup()">
+    <div class="ms-id-popup-inner"><button type="button" class="ms-id-popup-close" onclick="closeWorkerIdPopup()" aria-label="बंद करें">×</button><div id="msIdPopupBody"></div></div>
+  </div>
+
+  <!-- Admin Password Modal -->
+  <div class="modal" id="adminModal">
+    <div class="modal-content">
+      <h3 style="margin-bottom:10px; color:var(--primary);">🔐 एडमिन लॉगिन</h3>
+      <p style="font-size:0.85rem; color:var(--muted); margin-bottom:12px;">एडमिन पैनल खोलने के लिए गुप्त पासवर्ड डालें:</p>
+      <input type="password" id="adminPassInput" placeholder="पासवर्ड डालें (डिफ़ॉल्ट: 1234)" style="margin-bottom:12px;" />
+      <div class="row-2">
+        <button class="btn-primary" style="margin-top:0;" onclick="verifyAdmin()">लॉगिन करें</button>
+        <button class="btn-logout" onclick="closeModals()">बंद करें</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script>
+    // Default State & LocalStorage
+    const defaultCategories = ['राजमिस्त्री (Mason)', 'मजदूर (Helper)', 'इलेक्ट्रीशियन (Electrician)', 'प्लंबर (Plumber)', 'पेंटर (Painter)', 'बढ़ई (Carpenter)'];
+    const defaultWorkers = [
+      {
+        id: 'MS-1001',
+        name: 'रमेश कुमार',
+        phone: '9876543210',
+        category: 'राजमिस्त्री (Mason)',
+        rate: 750,
+        city: 'पटना',
+        pincode: '800001',
+        aadhaar: 'XXXX-XXXX-4512',
+        photo: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23dbeafe"/><circle cx="60" cy="44" r="22" fill="%231a3a8a"/><path d="M24 106c0-20 16-34 36-34s36 14 36 34" fill="%231a3a8a"/></svg>',
+        available: true,
+        validUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+      },
+      {
+        id: 'MS-1002',
+        name: 'सुरेश यादव',
+        phone: '9876543211',
+        category: 'इलेक्ट्रीशियन (Electrician)',
+        rate: 650,
+        city: 'दिल्ली',
+        pincode: '110001',
+        aadhaar: 'XXXX-XXXX-8821',
+        photo: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23fef3c7"/><circle cx="60" cy="44" r="22" fill="%23b45309"/><path d="M24 106c0-20 16-34 36-34s36 14 36 34" fill="%23b45309"/></svg>',
+        available: true,
+        validUntil: new Date(Date.now() + 320 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+      }
+    ];
+
+    let state = {
+      lang: 'hi',
+      categories: JSON.parse(localStorage.getItem('ms_cats')) || defaultCategories,
+      workers: JSON.parse(localStorage.getItem('ms_workers')) || defaultWorkers,
+      khata: JSON.parse(localStorage.getItem('ms_khata')) || [],
+      adminPass: localStorage.getItem('ms_admin_pass') || '1234',
+      paymentEnabled: localStorage.getItem('ms_pay_enabled') !== 'false',
+      regFee: localStorage.getItem('ms_reg_fee') || '99',
+      upiId: localStorage.getItem('ms_upi_id') || 'mazdoorsathi@upi',
+      currentWorkerId: localStorage.getItem('ms_logged_worker') || null,
+      customerUser: JSON.parse(localStorage.getItem('ms_customer_user')) || null,
+      historyStack: ['search'],
+      historyIndex: 0
+    };
+
+    const translations = {
+      hi: {
+        appTitle: 'मजदूर साथी',
+        appTagline: 'हर हाथ को काम',
+        myProfile: 'मेरी प्रोफाइल',
+        logout: 'लॉगआउट',
+        tabSearch: 'खोजें',
+        tabRegister: 'रजिस्ट्रेशन',
+        tabKhata: 'खाता',
+        findWorkerTitle: 'कारीगर / मजदूर खोजें',
+        filterCategory: 'काम की श्रेणी',
+        filterCity: 'शहर / इलाका / PIN Code',
+        regTitle: 'नया कारीगर रजिस्ट्रेशन',
+        fullName: 'पूरा नाम *',
+        mobileNum: 'मोबाइल नंबर *',
+        workCategory: 'काम की श्रेणी *',
+        dailyRate: 'रोज़ाना रेट (₹) *',
+        cityArea: 'शहर / गांव *',
+        pinCodeLabel: 'पिन कोड (PIN Code) *',
+        uploadPhoto: 'फोटो अपलोड करें (ID कार्ड के लिए)',
+        regFeeLabel: 'वार्षिक रजिस्ट्रेशन शुल्क:',
+        utrLabel: 'पेमेंट UTR / रेफरेंस नंबर *',
+        submitReg: 'रजिस्ट्रेशन पूरा करें',
+        khataTitle: 'खाता और हाजिरी रजिस्टर',
+        totalDays: 'कुल काम (दिन)',
+        totalPaid: 'कुल भुगतान (₹)',
+        personName: 'कारीगर या मालिक का नाम',
+        entryDate: 'तारीख',
+        attendance: 'हाजिरी',
+        amountPaid: 'प्राप्त भुगतान ₹',
+        saveKhataBtn: 'हाजिरी और हिसाब जोड़ें',
+        historyTitle: 'पिछला रिकॉर्ड (History)',
+        adminPanelTitle: 'एडमिन कंट्रोल पैनल',
+        payGatewayToggle: 'पेमेंट गेटवे (Registration Fee)',
+        feeSetting: 'रजिस्ट्रेशन फीस (₹)',
+        savePaySettings: 'पेमेंट सेटिंग सेव करें',
+        changePassLabel: 'नया एडमिन पासवर्ड बदलें',
+        updatePassBtn: 'पासवर्ड अपडेट करें',
+        manageCatLabel: 'मैनुअल काम की श्रेणी जोड़ें',
+        addCatBtn: '+ श्रेणी जोड़ें',
+        openProfileHead: 'अपनी प्रोफाइल और ID खोलें',
+        openProfileSub: 'अपना ID नंबर (जैसे MS-1001) या 10 अंकों का मोबाइल नंबर डालें:',
+        viewIdBtn: 'ID कार्ड देखें',
+        cancelBtn: 'बंद करें'
+      },
+      en: {
+        appTitle: 'Mazdoor Sathi',
+        appTagline: 'Work for Every Hand',
+        myProfile: 'My Profile',
+        logout: 'Logout',
+        tabSearch: 'Search',
+        tabRegister: 'Register',
+        tabKhata: 'Khata',
+        findWorkerTitle: 'Find Skilled Worker / Labour',
+        filterCategory: 'Work Category',
+        filterCity: 'City / Area / PIN Code',
+        regTitle: 'New Worker Registration',
+        fullName: 'Full Name *',
+        mobileNum: 'Mobile Number *',
+        workCategory: 'Work Category *',
+        dailyRate: 'Daily Rate (₹) *',
+        cityArea: 'City / Village *',
+        pinCodeLabel: 'PIN Code (6-Digit) *',
+        uploadPhoto: 'Upload Photo (For ID Card)',
+        regFeeLabel: 'Annual Registration Fee:',
+        utrLabel: 'Payment UTR / Reference No. *',
+        submitReg: 'Complete Registration',
+        khataTitle: 'Khata & Attendance Register',
+        totalDays: 'Total Work (Days)',
+        totalPaid: 'Total Paid (₹)',
+        personName: 'Worker or Employer Name',
+        entryDate: 'Date',
+        attendance: 'Attendance',
+        amountPaid: 'Amount Received ₹',
+        saveKhataBtn: 'Add Attendance & Entry',
+        historyTitle: 'Past Records (History)',
+        adminPanelTitle: 'Admin Control Panel',
+        payGatewayToggle: 'Payment Gateway (Registration Fee)',
+        feeSetting: 'Registration Fee (₹)',
+        savePaySettings: 'Save Payment Settings',
+        changePassLabel: 'Change Admin Password',
+        updatePassBtn: 'Update Password',
+        manageCatLabel: 'Add Manual Work Category',
+        addCatBtn: '+ Add Category',
+        openProfileHead: 'Open Your Profile & ID',
+        openProfileSub: 'Enter your ID number (e.g. MS-1001) or 10-digit mobile number:',
+        viewIdBtn: 'View ID Card',
+        cancelBtn: 'Close'
+      }
+    };
+
+    // Firebase connection for the existing Khata/Attendance records only.
+    // Worker directory, registration, profiles, admin settings and login remain local
+    // in this first test build; no separate worker folder/section is created here.
+    const msFirebaseConfig = {
+      apiKey: "AIzaSyBWCeEousFquGE91Wdafoq_uV0R36N-KL8",
+      authDomain: "majdoor-sathi-e97c1.firebaseapp.com",
+      databaseURL: "https://majdoor-sathi-e97c1-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "majdoor-sathi-e97c1",
+      storageBucket: "majdoor-sathi-e97c1.firebasestorage.app",
+      messagingSenderId: "1066087191412",
+      appId: "1:1066087191412:web:3020d6291c31db97389221",
+      measurementId: "G-DBND7T6MDQ"
+    };
+    let msAttendanceRef = null;
+    let msDirectoryRef = null;
+    let msConnectionRequestsRef = null;
+    let msConnectionsRef = null;
+    let msUsersRef = null;
+    let msFirebaseReady = false;
+    let msAuth = null;
+    let msIncomingRequests = {};
+    let msConnectionsData = {};
+    let msConnectionListenersUid = null;
+    let customerLoginMode = 'register';
+    let msApplyingFirebaseData = false;
+    try {
+      if (typeof firebase !== 'undefined' && !firebase.apps.length) firebase.initializeApp(msFirebaseConfig);
+      if (typeof firebase !== 'undefined') {
+        msAuth = firebase.auth();
+        msAttendanceRef = firebase.database().ref('majdoor_sathi/khata');
+        msDirectoryRef = firebase.database().ref('majdoor_sathi/workerDirectory');
+        msConnectionRequestsRef = firebase.database().ref('majdoor_sathi/connectionRequests');
+        msConnectionsRef = firebase.database().ref('majdoor_sathi/connectionsByUser');
+        msUsersRef = firebase.database().ref('majdoor_sathi/users');
+        msDirectoryRef.on('value', (snapshot) => {
+          const remote = snapshot.val() || {};
+          const remoteWorkers = Object.values(remote).filter(x => x && x.id);
+          const byId = new Map((state.workers || []).map(w => [String(w.id), w]));
+          remoteWorkers.forEach(w => byId.set(String(w.id), { ...(byId.get(String(w.id)) || {}), ...w }));
+          state.workers = Array.from(byId.values());
+          if (state.customerUser) {
+            const ownWorker = state.workers.find(w => String(w.uid||'') === String(state.customerUser.uid) || String(w.phone||'').replace(/\D/g,'') === String(state.customerUser.phone||''));
+            if (ownWorker) { state.customerUser.role='worker'; state.customerUser.name=ownWorker.name||state.customerUser.name; state.currentWorkerId=ownWorker.id; localStorage.setItem('ms_customer_user',JSON.stringify(state.customerUser)); localStorage.setItem('ms_logged_worker',ownWorker.id); if(msUsersRef) msUsersRef.child(state.customerUser.uid).update({ uid:state.customerUser.uid, name:state.customerUser.name, phone:state.customerUser.phone, role:'worker', updatedAt:Date.now() }).catch(console.error); }
+          }
+          localStorage.setItem('ms_workers', JSON.stringify(state.workers));
+          try { renderWorkers(); renderCategories(); renderKhata(); } catch (e) {}
+        }, err => console.error('Worker directory read failed:', err));
+        msAttendanceRef.on('value', (snapshot) => {
+          const remoteValue = snapshot.val();
+          if (remoteValue !== null && remoteValue !== undefined) {
+            const remoteRows = Array.isArray(remoteValue) ? remoteValue : Object.values(remoteValue);
+            msApplyingFirebaseData = true;
+            state.khata = remoteRows.filter(x => x && typeof x === 'object');
+            localStorage.setItem('ms_khata', JSON.stringify(state.khata));
+            msFirebaseReady = true;
+            try { if (typeof renderKhata === 'function') renderKhata(); } catch (e) {}
+            msApplyingFirebaseData = false;
+          } else {
+            // First connection: preserve and upload existing browser attendance history.
+            msFirebaseReady = true;
+            if (Array.isArray(state.khata) && state.khata.length) {
+              msAttendanceRef.set(state.khata).catch(err => console.error('Firebase attendance upload failed:', err));
+            }
+          }
+        }, (error) => {
+          console.error('Firebase attendance read failed:', error);
+          msFirebaseReady = false;
+          console.warn('Firebase connection/rules check required.');
+        });
+      }
+    } catch (error) {
+      console.error('Firebase initialization failed:', error);
+    }
+
+    function saveData() {
+      localStorage.setItem('ms_cats', JSON.stringify(state.categories));
+      localStorage.setItem('ms_workers', JSON.stringify(state.workers));
+      localStorage.setItem('ms_khata', JSON.stringify(state.khata));
+      localStorage.setItem('ms_admin_pass', state.adminPass);
+      localStorage.setItem('ms_pay_enabled', state.paymentEnabled);
+      localStorage.setItem('ms_reg_fee', state.regFee);
+      localStorage.setItem('ms_upi_id', state.upiId);
+      // Worker profiles tied to their own authenticated account are searchable by work + PIN.
+      if (msDirectoryRef) {
+        (state.workers || []).filter(w => w && w.uid && w.id).forEach(w => {
+          const publicProfile = { id:w.id, uid:w.uid, name:w.name||'', category:w.category||'', city:w.city||'', pincode:String(w.pincode||''), rate:Number(w.rate)||0, photo:w.photo||'', available:w.available!==false, blocked:!!w.blocked, validUntil:w.validUntil||'' };
+          msDirectoryRef.child(String(w.uid)).update(publicProfile).catch(err => console.error('Worker directory write failed:', err));
+        });
+      }
+      if (msFirebaseReady && msAttendanceRef && !msApplyingFirebaseData) {
+        msAttendanceRef.set(state.khata).catch(err => {
+          console.error('Firebase attendance write failed:', err);
+          alert('हाजिरी मोबाइल में सेव हुई, लेकिन Firebase में नहीं पहुँची। इंटरनेट और Database Rules जाँचें।');
+        });
+      }
+    }
+
+    // Password-based account login. Firebase Email/Password provider must be enabled.
+    // The phone number is mapped to a non-delivery sign-in alias; no SMS is sent.
+    function customerAuthEmail(phone) { return '91' + String(phone).replace(/\D/g, '') + '@login.majdoor-sathi-e97c1.firebaseapp.com'; }
+    function toggleCustomerLoginMode() {
+      customerLoginMode = customerLoginMode === 'register' ? 'login' : 'register';
+      const registering = customerLoginMode === 'register';
+      document.getElementById('loginNameGroup').style.display = registering ? 'block' : 'none';
+      document.getElementById('loginConfirmGroup').style.display = registering ? 'block' : 'none';
+      document.getElementById('custLoginName').required = registering;
+      document.getElementById('custLoginPasswordConfirm').required = registering;
+      document.getElementById('custLoginPassword').autocomplete = registering ? 'new-password' : 'current-password';
+      document.getElementById('customerLoginSubmit').textContent = registering ? '🔐 नया खाता बनाएँ' : '🔓 लॉगिन करें';
+      document.getElementById('customerLoginModeToggle').textContent = registering ? 'पहले से खाता है? लॉगिन करें' : 'नया खाता बनाना है? रजिस्टर करें';
+      document.getElementById('customerLoginMessage').textContent = '';
+    }
+    function customerAuthErrorMessage(error) {
+      const code = error && error.code || '';
+      if (code.includes('email-already-in-use')) return 'इस मोबाइल नंबर पर खाता पहले से है। लॉगिन मोड चुनें।';
+      if (code.includes('user-not-found') || code.includes('wrong-password') || code.includes('invalid-credential')) return 'मोबाइल नंबर या पासवर्ड गलत है।';
+      if (code.includes('weak-password')) return 'ठीक 8 अंकों का पासवर्ड डालें।';
+      if (code.includes('operation-not-allowed')) return 'Firebase Console में Authentication → Email/Password चालू करना बाकी है।';
+      if (code.includes('network-request-failed')) return 'इंटरनेट कनेक्शन जाँचें और फिर कोशिश करें।';
+      return error && error.message ? error.message : 'लॉगिन में समस्या आई। फिर कोशिश करें।';
+    }
+    async function handleCustomerLogin(event) {
+      event.preventDefault();
+      const name = document.getElementById('custLoginName').value.trim();
+      const phone = document.getElementById('custLoginPhone').value.replace(/\D/g, '');
+      const password = document.getElementById('custLoginPassword').value;
+      const confirmPassword = document.getElementById('custLoginPasswordConfirm').value;
+      const message = document.getElementById('customerLoginMessage');
+      const submit = document.getElementById('customerLoginSubmit');
+      if (!/^[0-9]{10}$/.test(phone)) { message.textContent = 'कृपया 10 अंकों का सही मोबाइल नंबर डालें।'; return; }
+      if (!/^[0-9]{8}$/.test(password)) { message.textContent = 'ठीक 8 अंकों का पासवर्ड डालें।'; return; }
+      if (!msAuth) { message.textContent = 'Firebase Authentication लोड नहीं हुआ। इंटरनेट और Firebase सेटिंग जाँचें।'; return; }
+      if (customerLoginMode === 'register' && !name) { message.textContent = 'अपना पूरा नाम लिखें।'; return; }
+      if (customerLoginMode === 'register' && password !== confirmPassword) { message.textContent = 'दोनों पासवर्ड एक जैसे नहीं हैं।'; return; }
+      submit.disabled = true; submit.textContent = 'कृपया प्रतीक्षा करें…'; message.textContent = '';
+      try {
+        const email = customerAuthEmail(phone);
+        let userCredential;
+        if (customerLoginMode === 'register') {
+          userCredential = await msAuth.createUserWithEmailAndPassword(email, password);
+          await userCredential.user.updateProfile({ displayName: name });
+        } else {
+          userCredential = await msAuth.signInWithEmailAndPassword(email, password);
+        }
+        const user = userCredential.user;
+        const finalName = (user.displayName || name || '').trim();
+        state.customerUser = { uid: user.uid, name: finalName, phone, role: 'owner' };
+        const worker = (state.workers || []).find(w => String(w.phone || '').replace(/\D/g, '') === phone);
+        state.currentWorkerId = worker ? worker.id : null;
+        if (worker) state.customerUser.role = 'worker';
+        localStorage.setItem('ms_customer_user', JSON.stringify(state.customerUser));
+        if (worker) localStorage.setItem('ms_logged_worker', worker.id); else localStorage.removeItem('ms_logged_worker');
+        document.getElementById('startLoginScreen').style.display = 'none';
+        if (worker) { renderProfile(worker.id); }
+        syncKhataLoginIdentity();
+        renderKhata();
+        switchTab('search', false);
+      } catch (error) {
+        message.textContent = customerAuthErrorMessage(error);
+      } finally {
+        submit.disabled = false;
+        submit.textContent = customerLoginMode === 'register' ? '🔐 नया खाता बनाएँ' : '🔓 लॉगिन करें';
+      }
+    }
+    function checkCustomerLogin() {
+      const overlay = document.getElementById('startLoginScreen');
+      const applyUser = async user => {
+        if (!user) {
+          if (msConnectionListenersUid) { try { msConnectionRequestsRef?.child(msConnectionListenersUid).off(); msConnectionsRef?.child(msConnectionListenersUid).off(); } catch(e) {} }
+          msIncomingRequests = {}; msConnectionsData = {}; msConnectionListenersUid = null; renderConnectionPanel();
+          state.customerUser = null; state.currentWorkerId = null;
+          localStorage.removeItem('ms_customer_user'); localStorage.removeItem('ms_logged_worker');
+          if (overlay) overlay.style.display = 'flex';
+          switchTab('search', false);
+          return;
+        }
+        const emailAlias = String(user.email || '').toLowerCase();
+        const aliasMatch = emailAlias.match(/^91([0-9]{10})@login\.majdoor-sathi-e97c1\.firebaseapp\.com$/);
+        const phone = aliasMatch ? aliasMatch[1] : '';
+        if (!phone) { if (overlay) overlay.style.display = 'flex'; return; }
+        const name = user.displayName || 'उपयोगकर्ता';
+        let profile = {};
+        try { if (msUsersRef) { const snap = await msUsersRef.child(user.uid).once('value'); profile = snap.val() || {}; } } catch(e) { console.warn('User profile read:',e); }
+        const worker = (state.workers || []).find(w => String(w.uid||'') === String(user.uid) || String(w.phone || '').replace(/\D/g, '') === phone);
+        state.customerUser = { uid: user.uid, name: (worker && worker.name) || profile.name || name, phone, role: worker ? 'worker' : (profile.role || 'owner') };
+        if (worker && !worker.uid) { worker.uid=user.uid; if(msDirectoryRef) msDirectoryRef.child(user.uid).update({ ...worker, uid:user.uid }).catch(console.error); }
+        if (msUsersRef && !profile.uid) msUsersRef.child(user.uid).update({ uid:user.uid, name:state.customerUser.name, phone, role:state.customerUser.role, updatedAt:Date.now() }).catch(console.error);
+        state.currentWorkerId = worker ? worker.id : null;
+        localStorage.setItem('ms_customer_user', JSON.stringify(state.customerUser));
+        if (worker) localStorage.setItem('ms_logged_worker', worker.id); else localStorage.removeItem('ms_logged_worker');
+        if (overlay) overlay.style.display = 'none';
+        syncKhataLoginIdentity();
+        try { renderKhata(); } catch (e) {}
+        watchMsConnections(user);
+      };
+      if (msAuth) msAuth.onAuthStateChanged(applyUser);
+      else applyUser(null);
+    }
+
+    // Login identity: worker accounts are tied to worker ID; owner accounts to login phone.
+    function getKhataLoginIdentity() {
+      const user = state.customerUser;
+      if (!user) return null;
+      const phone = String(user.phone || '').replace(/\D/g, '');
+      const worker = (state.workers || []).find(w => String(w.phone || '').replace(/\D/g, '') === phone);
+      if (worker) return { role: 'worker', name: worker.name || user.name, workerId: worker.id, accountKey: 'worker:' + String(worker.id), phone };
+      return { role: 'owner', name: user.name || 'मालिक', workerId: null, accountKey: 'owner:' + phone, phone };
+    }
+
+    function getKhataVisibleRecords() {
+      const identity = getKhataLoginIdentity();
+      if (!identity) return [];
+      return state.khata.filter(x => {
+        if (identity.role === 'worker') {
+          // Worker sees entries made by an owner for this worker's permanent ID,
+          // as well as entries the worker entered in their own account.
+          if (String(x.targetWorkerId || '') === String(identity.workerId)) return !!x.ownerUid && getConnectedOwnerUids().includes(String(x.ownerUid));
+          if ((x.role || 'owner') === 'worker' && x.accountKey) return x.accountKey === identity.accountKey;
+          return !x.accountKey && (x.name || 'मेरा खाता') === identity.name && (x.role || 'worker') === 'worker';
+        }
+        // Owner's own account remains separate; worker-linked entries remain
+        // associated with the selected worker ID and are not mixed into another owner's account.
+        if ((x.role || 'owner') !== 'owner') return false;
+        if (x.targetWorkerId && !getConnectedWorkerIds().includes(String(x.targetWorkerId))) return false;
+        if (x.accountKey) return x.accountKey === identity.accountKey;
+        return (x.name || 'मेरा खाता') === identity.name || (!x.role && (x.name || 'मेरा खाता') === 'मेरा खाता');
+      });
+    }
+
+    function syncKhataLoginIdentity() {
+      const identity = getKhataLoginIdentity();
+      const field = document.getElementById('khataOwnerName');
+      const label = document.getElementById('khataPersonLabel');
+      const hidden = document.getElementById('khataName');
+      if (!identity || !field) return;
+      field.value = identity.name;
+      field.readOnly = true;
+      field.placeholder = identity.role === 'worker' ? 'लॉगिन किए हुए मजदूर का नाम' : 'लॉगिन किए हुए मालिक का नाम';
+      if (label) label.innerText = identity.role === 'worker' ? 'मजदूर का नाम' : 'मालिक का नाम';
+      if (hidden) hidden.value = identity.name;
+      const accountTitle = document.getElementById('khataAccountIdentity');
+      if (accountTitle) accountTitle.innerText = (identity.role === 'worker' ? 'मजदूर का खाता: ' : 'मालिक का खाता: ') + identity.name;
+    }
+
+    // Toggle Language
+    function toggleLanguage() {
+      state.lang = state.lang === 'hi' ? 'en' : 'hi';
+      document.getElementById('langLabel').innerText = state.lang === 'hi' ? 'English' : 'हिंदी';
+      document.querySelectorAll('[data-t]').forEach(el => {
+        const key = el.getAttribute('data-t');
+        if (translations[state.lang][key]) {
+          el.innerText = translations[state.lang][key];
+        }
+      });
+      renderWorkers();
+      if (state.currentWorkerId) renderProfile(state.currentWorkerId);
+    }
+
+    // Owner-to-worker connection workflow. A worker must approve before any account is linked.
+    function getConnectedWorkerIds() {
+      const uid = String(state.customerUser?.uid || '');
+      if (!uid) return [];
+      return Object.values(msConnectionsData || {}).filter(c => c && c.role === 'worker').map(c => String(c.workerId || '')).filter(Boolean);
+    }
+    function getConnectedOwnerUids() {
+      if (!state.customerUser?.uid) return [];
+      return Object.values(msConnectionsData || {}).filter(c => c && c.role === 'owner').map(c => String(c.uid || '')).filter(Boolean);
+    }
+    function renderConnectionPanel() {
+      const panel = document.getElementById('msConnectionPanel');
+      const host = document.getElementById('msConnectionPanelContent');
+      if (!panel || !host || !state.customerUser) { if(panel) panel.style.display='none'; return; }
+      const requests = Object.entries(msIncomingRequests || {}).filter(([id,r]) => r && r.status === 'pending');
+      const connected = Object.entries(msConnectionsData || {});
+      const requestHtml = requests.map(([id,r]) => `<div style="padding:8px 0;border-top:1px solid #bfdbfe;"><b>${msEscape(r.ownerName||'मालिक')}</b> (${msEscape(r.ownerPhone||'')}) आपसे कनेक्ट होना चाहते हैं। मजदूर ID: <b>${msEscape(r.workerId||'')}</b><div style="display:flex;gap:8px;margin-top:6px;"><button type="button" onclick="acceptWorkerConnection('${msEscape(id)}')" style="background:#16a34a;color:#fff;border:0;border-radius:8px;padding:7px 12px;font-weight:800;">✓ कनेक्ट स्वीकार करें</button><button type="button" onclick="rejectWorkerConnection('${msEscape(id)}')" style="background:#64748b;color:#fff;border:0;border-radius:8px;padding:7px 12px;">अस्वीकार</button></div></div>`).join('');
+      const connectedHtml = connected.map(([id,c]) => `<div style="padding:5px 0;border-top:1px solid #bfdbfe;">✓ ${c.role==='worker'?'कनेक्टेड मजदूर:':'कनेक्टेड मालिक:'} <b>${msEscape(c.name||'')}</b> ${c.phone?'— '+msEscape(c.phone):''}</div>`).join('');
+      host.innerHTML = (requestHtml || '') + (connectedHtml || '') || 'अभी कोई कनेक्शन रिक्वेस्ट नहीं है।';
+      panel.style.display = (requests.length || connected.length) ? 'block' : 'none';
+    }
+    function watchMsConnections(user) {
+      if (!user || !msConnectionRequestsRef || !msConnectionsRef) return;
+      const uid = String(user.uid);
+      if (msConnectionListenersUid && msConnectionListenersUid !== uid) {
+        try { msConnectionRequestsRef.child(msConnectionListenersUid).off(); msConnectionsRef.child(msConnectionListenersUid).off(); } catch(e) {}
+      }
+      msConnectionListenersUid = uid;
+      msConnectionRequestsRef.child(uid).on('value', snap => { msIncomingRequests = snap.val() || {}; renderConnectionPanel(); });
+      msConnectionsRef.child(uid).on('value', snap => {
+        msConnectionsData = snap.val() || {};
+        renderConnectionPanel();
+        try { populateKhataTargetWorkers(); renderKhata(); } catch(e) {}
+      });
+    }
+    function openWorkerConnection(workerId) {
+      if (!state.customerUser) return alert('पहले मालिक के खाते से लॉगिन करें।');
+      if (state.customerUser.role === 'worker') return alert('मजदूर खाते से कनेक्शन रिक्वेस्ट नहीं भेजी जा सकती।');
+      const w = (state.workers || []).find(x => String(x.id) === String(workerId));
+      if (!w) return alert('मजदूर की ID नहीं मिली।');
+      renderProfile(w.id); switchTab('profile');
+      const entered = prompt(`मजदूर की प्रोफाइल ID: ${w.id}\nकनेक्शन भेजने के लिए यही ID कोड डालें:`);
+      if (entered === null) return;
+      sendWorkerConnectionRequest(w.id, entered.trim());
+    }
+    async function sendWorkerConnectionRequest(workerId, enteredCode) {
+      const w = (state.workers || []).find(x => String(x.id) === String(workerId));
+      if (!w || String(enteredCode).toUpperCase() !== String(w.id).toUpperCase()) return alert('मजदूर का ID कोड सही नहीं है।');
+      if (!w.uid) return alert('इस मजदूर की प्रोफाइल अभी उसके अपने मोबाइल लॉगिन से लिंक नहीं है। पहले मजदूर अपने मोबाइल नंबर से लॉगिन करके अपनी प्रोफाइल रजिस्टर/लिंक करे।');
+      if (!msConnectionRequestsRef || !msConnectionsRef) return alert('Firebase कनेक्शन सेवा अभी उपलब्ध नहीं है।');
+      const owner = state.customerUser;
+      if (String(owner.uid) === String(w.uid)) return alert('आप अपनी ही ID से कनेक्ट नहीं हो सकते।');
+      if (msConnectionsData && msConnectionsData[w.uid]) return alert('यह मजदूर पहले से आपके खाते से कनेक्ट है।');
+      try {
+        const reqRef = msConnectionRequestsRef.child(String(w.uid)).push();
+        await reqRef.set({ id:reqRef.key, status:'pending', ownerUid:owner.uid, ownerName:owner.name||'मालिक', ownerPhone:owner.phone||'', workerUid:w.uid, workerId:w.id, workerName:w.name||'', createdAt:Date.now() });
+        alert('कनेक्शन रिक्वेस्ट मजदूर के खाते में भेज दी गई है। मजदूर की स्वीकृति के बाद ही खाता खुलेगा।');
+      } catch(err) { console.error(err); alert('रिक्वेस्ट नहीं भेजी गई। Firebase Database Rules और इंटरनेट कनेक्शन जाँचें।'); }
+    }
+    async function acceptWorkerConnection(requestId) {
+      const request = msIncomingRequests && msIncomingRequests[requestId];
+      const worker = state.customerUser;
+      if (!request || !worker || request.status !== 'pending') return;
+      try {
+        const recordForOwner = { role:'worker', uid:worker.uid, workerId:request.workerId, name:worker.name||request.workerName||'', phone:worker.phone||'', connectedAt:Date.now() };
+        const recordForWorker = { role:'owner', uid:request.ownerUid, workerId:request.workerId, name:request.ownerName||'मालिक', phone:request.ownerPhone||'', connectedAt:Date.now() };
+        const updates = {};
+        updates[`${request.ownerUid}/${worker.uid}`] = recordForOwner;
+        updates[`${worker.uid}/${request.ownerUid}`] = recordForWorker;
+        await msConnectionsRef.update(updates);
+        await msConnectionRequestsRef.child(worker.uid).child(requestId).remove();
+        alert('खाता सफलतापूर्वक कनेक्ट हो गया। अब कुल काम, भुगतान और हाजिरी साझा दिखाई देंगे।');
+        try { renderConnectionPanel(); populateKhataTargetWorkers(); renderKhata(); } catch(e) {}
+      } catch(err) { console.error(err); alert('कनेक्शन पूरा नहीं हुआ। Firebase Database Rules जाँचें।'); }
+    }
+    async function rejectWorkerConnection(requestId) {
+      const uid = String(state.customerUser?.uid||'');
+      if (!uid || !msConnectionRequestsRef) return;
+      try { await msConnectionRequestsRef.child(uid).child(requestId).remove(); } catch(e) { alert('रिक्वेस्ट हटाई नहीं जा सकी।'); }
+    }
+
+    // Navigation & History Arrows
+    function switchTab(tabName, pushHistory = true) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+      const targetSec = document.getElementById('sec-' + tabName);
+      if (targetSec) targetSec.classList.add('active');
+
+      const targetTab = document.getElementById('tab-' + tabName);
+      if (targetTab) targetTab.classList.add('active');
+
+      if (pushHistory && state.historyStack[state.historyIndex] !== tabName) {
+        state.historyStack = state.historyStack.slice(0, state.historyIndex + 1);
+        state.historyStack.push(tabName);
+        state.historyIndex++;
+        window.history.pushState({ tab: tabName }, '');
+      }
+    }
+
+    function goBack() {
+      if (state.historyIndex > 0) {
+        state.historyIndex--;
+        switchTab(state.historyStack[state.historyIndex], false);
+      }
+    }
+
+    function goForward() {
+      if (state.historyIndex < state.historyStack.length - 1) {
+        state.historyIndex++;
+        switchTab(state.historyStack[state.historyIndex], false);
+      }
+    }
+
+    // Prevent Mobile Back Button from Closing App Immediately
+    window.history.pushState({ tab: 'search' }, '');
+    window.addEventListener('popstate', function () {
+      if (state.historyIndex > 0) {
+        goBack();
+        window.history.pushState({ tab: state.historyStack[state.historyIndex] }, '');
+      } else {
+        switchTab('search', false);
+        window.history.pushState({ tab: 'search' }, '');
+      }
+    });
+
+    // Left / Right Touch Swipe Navigation Across Main Tabs
+    const tabOrder = ['search', 'register', 'khata'];
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const swipeArea = document.getElementById('swipeContainer');
+
+    swipeArea.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    swipeArea.addEventListener('touchend', (e) => {
+      const diffX = e.changedTouches[0].screenX - touchStartX;
+      const diffY = e.changedTouches[0].screenY - touchStartY;
+      if (Math.abs(diffX) > 65 && Math.abs(diffX) > Math.abs(diffY) * 1.4) {
+        const currentTab = state.historyStack[state.historyIndex];
+        const idx = tabOrder.indexOf(currentTab);
+        if (idx !== -1) {
+          if (diffX < 0 && idx < tabOrder.length - 1) {
+            switchTab(tabOrder[idx + 1]);
+          } else if (diffX > 0 && idx > 0) {
+            switchTab(tabOrder[idx - 1]);
+          }
+        }
+      }
+    }, { passive: true });
+
+    // Populate Categories
+    function renderCategories() {
+      const searchSel = document.getElementById('searchCategory');
+      const regSel = document.getElementById('regCategory');
+      const adminList = document.getElementById('adminCatList');
+
+      searchSel.innerHTML = '<option value="ALL">सभी श्रेणियां (All)</option>';
+      regSel.innerHTML = '';
+      adminList.innerHTML = '';
+
+      state.categories.forEach((cat, idx) => {
+        searchSel.innerHTML += `<option value="${cat}">${cat}</option>`;
+        regSel.innerHTML += `<option value="${cat}">${cat}</option>`;
+        adminList.innerHTML += `
+          <span style="background:#e2e8f0; padding:5px 10px; border-radius:8px; font-size:0.82rem; font-weight:600; display:inline-flex; align-items:center; gap:6px;">
+            ${cat} <b style="color:#dc2626; cursor:pointer;" onclick="removeCategory(${idx})">×</b>
+          </span>`;
+      });
+    }
+
+    function addCategory() {
+      const val = document.getElementById('newCatInput').value.trim();
+      if (!val) return;
+      state.categories.push(val);
+      document.getElementById('newCatInput').value = '';
+      saveData();
+      renderCategories();
+    }
+
+    function removeCategory(idx) {
+      if (state.categories.length <= 1) return alert('कम से कम एक श्रेणी ज़रूरी है।');
+      state.categories.splice(idx, 1);
+      saveData();
+      renderCategories();
+    }
+
+    // Render Workers List (Search by City OR PIN Code)
+    function renderWorkers() {
+      const cat = document.getElementById('searchCategory').value;
+      const query = document.getElementById('searchCity').value.trim();
+      const list = document.getElementById('workersList');
+      if (state.customerUser?.role === 'worker') { list.innerHTML = '<div class="card" style="text-align:center;color:var(--muted);">मजदूर खाते में मालिक की कनेक्शन रिक्वेस्ट यहाँ दिखाई देगी। मजदूर खोजने का विकल्प मालिक के खाते में है।</div>'; return; }
+      if (cat === 'ALL' || !/^[0-9]{6}$/.test(query)) {
+        list.innerHTML = '<div class="card" style="text-align:center;color:var(--muted);">पहले काम की श्रेणी चुनें और 6 अंकों का PIN Code डालें। सभी मजदूरों की सूची अपने आप नहीं दिखाई जाएगी।</div>';
+        return;
+      }
+
+      const filtered = state.workers.filter(w => {
+        // Only profiles linked to the worker's own authenticated account are searchable.
+        if (!w.uid) return false;
+        // A worker who blocks their profile is hidden from public search results.
+        if (w.blocked) return false;
+        if (!w.available) return false;
+        if (cat !== 'ALL' && w.category !== cat) return false;
+        if (query) {
+          const matchPin = String(w.pincode || '') === query;
+          if (!matchPin) return false;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        list.innerHTML = `<div class="card" style="text-align:center; color:var(--muted);">इस शहर या PIN कोड पर कोई उपलब्ध कारीगर नहीं मिला।</div>`;
+        return;
+      }
+
+      list.innerHTML = filtered.map(w => `
+        <div class="worker-card">
+          <img src="${w.photo}" alt="${w.name}" class="worker-avatar" />
+          <div class="worker-info">
+            <div class="worker-name">${w.name} <small style="color:var(--muted); font-weight:600;">(${w.id})</small></div>
+            <div class="worker-badge">${w.category}</div>
+            <div class="worker-meta">
+              📍 ${w.city} ${w.pincode ? `(PIN: <b>${w.pincode}</b>)` : ''} &nbsp;|&nbsp; 💰 ₹${w.rate}/दिन
+            </div>
+            <button type="button" class="call-btn" onclick="openWorkerConnection('${w.id}')">🪪 ID देखें और कनेक्ट करें</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Payment UI Sync
+    function syncPaymentUI() {
+      const payBox = document.getElementById('regPaymentBox');
+      const utrInput = document.getElementById('regUtr');
+      const toggle = document.getElementById('adminPayToggle');
+      const hint = document.getElementById('payStatusHint');
+
+      toggle.checked = state.paymentEnabled;
+      document.getElementById('displayFeeAmount').innerText = state.regFee;
+      document.getElementById('displayUpiId').innerText = state.upiId;
+      document.getElementById('adminFeeInput').value = state.regFee;
+      document.getElementById('adminUpiInput').value = state.upiId;
+
+      if (state.paymentEnabled) {
+        payBox.style.display = 'block';
+        utrInput.required = true;
+        hint.innerText = 'अभी चालू है (फीस अनिवार्य)';
+        hint.style.color = '#16a34a';
+      } else {
+        payBox.style.display = 'none';
+        utrInput.required = false;
+        hint.innerText = 'अभी बंद है (फ्री रजिस्ट्रेशन चालू)';
+        hint.style.color = '#dc2626';
+      }
+    }
+
+    function togglePaymentGateway() {
+      state.paymentEnabled = document.getElementById('adminPayToggle').checked;
+      saveData();
+      syncPaymentUI();
+    }
+
+    function savePaymentSettings() {
+      state.regFee = document.getElementById('adminFeeInput').value || '0';
+      state.upiId = document.getElementById('adminUpiInput').value.trim() || 'mazdoorsathi@upi';
+      saveData();
+      syncPaymentUI();
+      alert('पेमेंट सेटिंग सफलतापूर्वक सेव हो गई!');
+    }
+
+    // Registration photo chooser: explicit camera and gallery options.
+    window.msSelectedRegistrationPhoto = null;
+    function selectRegistrationPhoto(input) {
+      const file = input && input.files && input.files[0];
+      if (!file) return;
+      window.msSelectedRegistrationPhoto = file;
+      const label = document.getElementById('regPhotoSelection');
+      if (label) label.textContent = 'चुनी गई फोटो: ' + file.name;
+      const otherId = input.id === 'regPhotoCamera' ? 'regPhotoGallery' : 'regPhotoCamera';
+      const other = document.getElementById(otherId);
+      if (other) other.value = '';
+    }
+
+    // Register Worker (Aadhaar entry removed from registration)
+    function registerWorker(e) {
+      e.preventDefault();
+      const name = document.getElementById('regName').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const category = document.getElementById('regCategory').value;
+      const rate = document.getElementById('regRate').value;
+      const city = document.getElementById('regCity').value.trim();
+      const pincode = document.getElementById('regPincode').value.trim();
+      const photoInput = window.msSelectedRegistrationPhoto || null;
+
+      const newId = state.customerUser?.uid ? ('MS-' + String(state.customerUser.uid).replace(/[^a-z0-9]/gi,'').slice(-8).toUpperCase()) : ('MS-' + String(phone).slice(-6) + '-' + Date.now().toString().slice(-4));
+      const validDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+      const finishReg = (photoUrl) => {
+        const newWorker = {
+          id: newId,
+          name,
+          phone,
+          category,
+          rate,
+          city,
+          pincode,
+          photo: photoUrl,
+          available: true,
+          blocked: false,
+          validUntil: validDate,
+          uid: (state.customerUser && String(state.customerUser.phone||'').replace(/\D/g,'') === String(phone).replace(/\D/g,'')) ? state.customerUser.uid : ''
+        };
+        state.workers.unshift(newWorker);
+        if (newWorker.uid && msDirectoryRef) msDirectoryRef.child(newWorker.uid).update({ id:newWorker.id, uid:newWorker.uid, name:newWorker.name, category:newWorker.category, city:newWorker.city, pincode:newWorker.pincode, rate:Number(newWorker.rate)||0, photo:newWorker.photo||'', available:true, blocked:false, validUntil:newWorker.validUntil }).catch(console.error);
+        if (newWorker.uid && msUsersRef) {
+          state.customerUser.role = 'worker';
+          msUsersRef.child(newWorker.uid).update({ uid:newWorker.uid, name, phone, role:'worker', updatedAt:Date.now() }).catch(console.error);
+        }
+        state.currentWorkerId = newId;
+        localStorage.setItem('ms_logged_worker', newId);
+        saveData();
+        document.getElementById('regForm').reset();
+        window.msSelectedRegistrationPhoto = null;
+        const photoLabel = document.getElementById('regPhotoSelection');
+        if (photoLabel) photoLabel.textContent = 'अभी कोई फोटो नहीं चुनी गई है';
+        renderWorkers();
+        alert(`रजिस्ट्रेशन सफल! आपका ID नंबर है: ${newId}`);
+        renderProfile(newId);
+        switchTab('profile');
+      };
+
+      if (photoInput) {
+        const reader = new FileReader();
+        reader.onload = (ev) => finishReg(ev.target.result);
+        reader.readAsDataURL(photoInput);
+      } else {
+        finishReg('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="%23dbeafe"/><circle cx="60" cy="44" r="22" fill="%231a3a8a"/><path d="M24 106c0-20 16-34 36-34s36 14 36 34" fill="%231a3a8a"/></svg>');
+      }
+    }
+
+    // Profile & Large ID Card
+    function openProfileModal() {
+      if (state.currentWorkerId) {
+        renderProfile(state.currentWorkerId);
+        switchTab('profile');
+      } else {
+        document.getElementById('profileModal').classList.add('active');
+      }
+    }
+
+    function loadWorkerProfile() {
+      const query = document.getElementById('profileSearchInput').value.trim().toUpperCase();
+      const worker = state.workers.find(w => w.id.toUpperCase() === query || w.phone === query);
+      if (!worker) {
+        alert('यह ID या मोबाइल नंबर नहीं मिला! कृपया सही जानकारी डालें (जैसे: MS-1001)');
+        return;
+      }
+      state.currentWorkerId = worker.id;
+      localStorage.setItem('ms_logged_worker', worker.id);
+      closeModals();
+      renderProfile(worker.id);
+      switchTab('profile');
+    }
+
+    function renderProfile(workerId) {
+      const w = state.workers.find(x => x.id === workerId);
+      if (!w) return;
+
+      const today = new Date();
+      const validDate = new Date(w.validUntil);
+      const diffTime = validDate - today;
+      const daysLeft = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+
+      const container = document.getElementById('profileContent');
+      const loggedPhone = String(state.customerUser?.phone || '').replace(/\D/g, '');
+      const profilePhone = String(w.phone || '').replace(/\D/g, '');
+      const isOwnProfile = !!loggedPhone && loggedPhone === profilePhone;
+      const isConnectedOwner = !!(state.customerUser && getConnectedWorkerIds().includes(String(w.id)));
+      const visiblePhone = (isOwnProfile || isConnectedOwner) ? w.phone : 'कनेक्शन स्वीकार होने के बाद दिखाई देगा';
+      container.innerHTML = `
+        <div class="id-card-box" id="printableIdCard">
+          <div class="id-card-header">
+            <h2>🛠️ मजदूर साथी (MAZDOOR SATHI)</h2>
+            <p>हर हाथ को काम • डिजिटल पहचान पत्र</p>
+          </div>
+          <div class="id-card-body">
+            <img src="${w.photo}" alt="${w.name}" class="id-photo" />
+            <div class="id-number-tag">ID: ${w.id}</div>
+            <h3 style="font-size:1.35rem; color:#0f172a; margin-bottom:6px;">${w.name}</h3>
+            <table class="id-details-table">
+              <tr><td>काम की श्रेणी:</td><td>${w.category}</td></tr>
+              <tr><td>मोबाइल नंबर:</td><td>${visiblePhone}</td></tr>
+              <tr><td>रोज़ाना रेट:</td><td>₹${w.rate} / दिन</td></tr>
+              <tr><td>शहर / पता:</td><td>${w.city} ${w.pincode ? `(PIN: ${w.pincode})` : ''}</td></tr>
+              <tr><td>ID वैलिडिटी:</td><td>${w.validUntil} तक</td></tr>
+            </table>
+            <div class="validity-banner ${daysLeft === 0 ? 'expired' : ''}">
+              ${daysLeft > 0 ? `✅ सक्रिय कार्ड: साल में <strong>${daysLeft} दिन</strong> शेष बचे हैं` : '❌ वैलिडिटी समाप्त हो गई है'}
+            </div>
+          </div>
+        </div>
+
+        <button class="status-toggle-btn ${w.available ? 'online' : 'offline'}" onclick="toggleWorkerStatus('${w.id}')">
+          ${w.available ? '🟢 ON: अभी काम के लिए उपलब्ध (दबाकर व्यस्त करें)' : '🔴 OFF: अभी व्यस्त (दबाकर उपलब्ध करें)'}
+        </button>
+
+        ${isOwnProfile ? `
+          <div style="margin:12px 0;padding:12px;border:1px solid ${w.blocked ? '#fecaca' : '#bfdbfe'};border-radius:12px;background:${w.blocked ? '#fff1f2' : '#eff6ff'};">
+            <div style="font-weight:700;margin-bottom:8px;color:#1e293b;">🔒 प्रोफाइल सर्च सेटिंग</div>
+            <div style="font-size:.88rem;color:#475569;margin-bottom:10px;">${w.blocked ? 'आपकी प्रोफाइल अभी सर्च में छिपी हुई है।' : 'आपकी प्रोफाइल अभी सर्च में दिखाई दे रही है।'}</div>
+            <button type="button" onclick="toggleWorkerBlock('${w.id}')" style="width:auto;padding:5px 9px;border:0;border-radius:7px;background:${w.blocked ? '#dc2626' : '#16a34a'};color:#fff;font-size:12px;font-weight:800;">
+              ${w.blocked ? '🔴 ब्लॉक' : '🟢 अनब्लॉक'}
+            </button>
+          </div>
+        ` : ''}
+
+        <div class="row-2">
+          <button class="btn-primary" style="margin-top:0;" onclick="window.print()">🖨️ ID कार्ड प्रिंट / सेव करें</button>
+          <button class="btn-success" onclick="renewValidity('${w.id}')">🔄 +1 साल वैलिडिटी बढ़ाएं</button>
+        </div>
+      `;
+    }
+
+    function toggleWorkerStatus(workerId) {
+      const w = state.workers.find(x => x.id === workerId);
+      if (!w) return;
+      w.available = !w.available;
+      saveData();
+      renderProfile(workerId);
+      renderWorkers();
+    }
+
+    // Only the account whose logged-in mobile matches this worker can change search visibility.
+    function toggleWorkerBlock(workerId) {
+      const w = state.workers.find(x => x.id === workerId);
+      if (!w) return;
+      const loggedPhone = String(state.customerUser?.phone || '').replace(/\D/g, '');
+      const profilePhone = String(w.phone || '').replace(/\D/g, '');
+      if (!loggedPhone || loggedPhone !== profilePhone) {
+        alert('सुरक्षा के लिए केवल अपने रजिस्टर्ड मोबाइल नंबर से लॉगिन करके ही प्रोफाइल ब्लॉक / अनब्लॉक करें।');
+        return;
+      }
+      w.blocked = !w.blocked;
+      saveData();
+      renderProfile(workerId);
+      renderWorkers();
+      alert(w.blocked ? 'आपकी प्रोफाइल सर्च से छिपा दी गई है।' : 'आपकी प्रोफाइल फिर से सर्च में दिखाई देगी।');
+    }
+
+    function renewValidity(workerId) {
+      const w = state.workers.find(x => x.id === workerId);
+      if (!w) return;
+      if (state.paymentEnabled) {
+        const utr = prompt(`वार्षिक रिन्यूअल फीस ₹${state.regFee} (UPI: ${state.upiId}) जमा करके UTR नंबर डालें:`);
+        if (!utr || utr.trim().length < 4) return alert('रिन्यूअल के लिए सही UTR नंबर ज़रूरी है।');
+      }
+      const nextYear = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+      w.validUntil = nextYear;
+      saveData();
+      renderProfile(workerId);
+      alert('बधाई हो! आपका ID कार्ड अगले 365 दिनों के लिए अपडेट हो गया है।');
+    }
+
+    async function logoutUser() {
+      try { if (msAuth) await msAuth.signOut(); } catch (error) { alert('लॉगआउट नहीं हो पाया: ' + (error.message || 'फिर कोशिश करें।')); return; }
+      const oldUid = String(state.customerUser?.uid || msConnectionListenersUid || '');
+      if (oldUid) { try { msConnectionRequestsRef?.child(oldUid).off(); msConnectionsRef?.child(oldUid).off(); } catch(e) {} }
+      state.currentWorkerId = null;
+      state.customerUser = null;
+      msIncomingRequests = {}; msConnectionsData = {}; msConnectionListenersUid = null;
+      renderConnectionPanel();
+      localStorage.removeItem('ms_logged_worker');
+      localStorage.removeItem('ms_customer_user');
+      switchTab('search', false);
+      const overlay = document.getElementById('startLoginScreen');
+      if (overlay) overlay.style.display = 'flex';
+    }
+
+    // Khata: owner keeps a separate ledger; each owner entry is also linked to the selected worker ID.
+    let khataMonthCursor = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+    let selectedKhataWorkDate = '';
+    let khataSaving = false;
+    let khataHistoryCursor = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+    let selectedKhataTargetWorkerId = '';
+    function formatKhataDate(dateValue) {
+      if (!dateValue) return 'तारीख उपलब्ध नहीं';
+      const d = new Date(dateValue + 'T00:00:00');
+      return isNaN(d.getTime()) ? dateValue : d.toLocaleDateString('hi-IN', {day:'2-digit',month:'long',year:'numeric'});
+    }
+    function khataMonthText(d) { return d.toLocaleDateString('hi-IN',{month:'long',year:'numeric'}); }
+    function populateKhataTargetWorkers() {
+      const identity = getKhataLoginIdentity();
+      const wrap = document.getElementById('khataOwnerWorkerSelect');
+      const select = document.getElementById('khataTargetWorker');
+      if (!wrap || !select) return;
+      if (identity?.role !== 'owner') { wrap.style.display = 'none'; selectedKhataTargetWorkerId = identity?.workerId || ''; return; }
+      wrap.style.display = 'block';
+      const allowedIds = new Set(getConnectedWorkerIds());
+      const workers = (state.workers || []).filter(w => allowedIds.has(String(w.id))).slice().sort((a,b)=>(a.name||'').localeCompare(b.name||'','hi'));
+      select.innerHTML = '<option value="">मजदूर चुनें</option>' + workers.map(w=>`<option value="${msEscape(w.id)}">${msEscape(w.name||'नाम उपलब्ध नहीं')} — ${msEscape(w.phone||'')}</option>`).join('');
+      if (workers.some(w=>String(w.id)===String(selectedKhataTargetWorkerId))) select.value = String(selectedKhataTargetWorkerId);
+      else { selectedKhataTargetWorkerId = ''; select.value = ''; }
+    }
+    function onKhataTargetWorkerChange() { selectedKhataTargetWorkerId = document.getElementById('khataTargetWorker')?.value || ''; renderKhataCalendar(); }
+    function openKhataModal(type) {
+      khataMonthCursor = new Date(new Date().getFullYear(),new Date().getMonth(),1);
+      selectedKhataWorkDate = '';
+      document.getElementById('khataModal').style.display='flex';
+      document.getElementById('khataWorkControls').style.display=type==='work'?'block':'none';
+      document.getElementById('khataPaymentControls').style.display=type==='payment'?'block':'none';
+      document.getElementById('khataModalTitle').innerText=type==='work'?'📅 कुल काम':'💰 कुल भुगतान';
+      syncKhataLoginIdentity(); populateKhataTargetWorkers(); renderKhataCalendar();
+      const payDate=document.getElementById('khataPaymentDate');
+      if(type==='payment') { payDate.value=new Date().toISOString().slice(0,10); document.getElementById('khataPaymentAmount').value=''; }
+    }
+    function closeKhataModal(){ document.getElementById('khataModal').style.display='none'; khataSaving=false; }
+    function changeKhataMonth(delta){ khataMonthCursor.setMonth(khataMonthCursor.getMonth()+delta); renderKhataCalendar(); }
+    function khataRecordMatchesCurrentTarget(x) {
+      const identity=getKhataLoginIdentity();
+      if (!identity) return false;
+      if (identity.role === 'owner') {
+        if ((x.role || 'owner') !== 'owner') return false;
+        if (x.accountKey && x.accountKey !== identity.accountKey) return false;
+        if (!x.accountKey && (x.name || 'मेरा खाता') !== identity.name && !( !x.role && (x.name || 'मेरा खाता') === 'मेरा खाता')) return false;
+        return String(x.targetWorkerId || '') === String(selectedKhataTargetWorkerId || '');
+      }
+      return (String(x.targetWorkerId || '') === String(identity.workerId) && !!x.ownerUid && getConnectedOwnerUids().includes(String(x.ownerUid))) ||
+        ((x.role || 'owner') === 'worker' && x.accountKey === identity.accountKey);
+    }
+    function renderKhataCalendar(){
+      const year=khataMonthCursor.getFullYear(), month=khataMonthCursor.getMonth();
+      const label=khataMonthText(khataMonthCursor);
+      document.getElementById('khataMonthLabel').innerText=label;
+      document.getElementById('khataPaymentMonthLabel').innerText=label;
+      const host=document.getElementById('khataCalendar');
+      const names=['रवि','सोम','मंगल','बुध','गुरु','शुक्र','शनि'];
+      host.innerHTML=names.map(x=>`<div style="font-size:11px;font-weight:700;padding:4px 0;">${x}</div>`).join('');
+      const first=new Date(year,month,1).getDay(), count=new Date(year,month+1,0).getDate();
+      for(let i=0;i<first;i++) host.insertAdjacentHTML('beforeend','<div></div>');
+      for(let day=1;day<=count;day++){
+        const date=`${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        const exists=state.khata.some(x=>x.date===date&&(Number(x.att)||0)>0&&khataRecordMatchesCurrentTarget(x));
+        const chosen=selectedKhataWorkDate===date;
+        host.insertAdjacentHTML('beforeend',`<button type="button" onclick="selectKhataWorkDate('${date}')" style="border:1px solid ${chosen?'var(--success)':'#d1d5db'};border-radius:50%;min-height:36px;background:${chosen?'#dcfce7':exists?'#f0fdf4':'white'};color:#111;font-weight:${chosen||exists?'800':'500'};">${day}${exists?' ✓':''}</button>`);
+      }
+    }
+    function selectKhataWorkDate(date){ selectedKhataWorkDate=date; renderKhataCalendar(); }
+    function upsertKhataRecord(date,att,amount){
+      const identity=getKhataLoginIdentity();
+      if(!identity) return alert('खाता देखने और रिकॉर्ड जोड़ने के लिए पहले लॉगिन करें।');
+      if(identity.role==='owner' && !selectedKhataTargetWorkerId) return alert('पहले मजदूर चुनें।');
+      const targetWorker = identity.role==='owner' ? (state.workers||[]).find(w=>String(w.id)===String(selectedKhataTargetWorkerId)) : (state.workers||[]).find(w=>String(w.id)===String(identity.workerId));
+      if(identity.role==='owner' && !targetWorker) return alert('चुना हुआ मजदूर रिकॉर्ड नहीं मिला।');
+      if(identity.role==='owner' && !getConnectedWorkerIds().includes(String(targetWorker.id))) return alert('पहले इस मजदूर का कनेक्शन स्वीकार होना जरूरी है।');
+      const targetWorkerId = targetWorker ? targetWorker.id : '';
+      const targetWorkerName = targetWorker ? targetWorker.name : identity.name;
+      const accountKey=identity.accountKey;
+      document.getElementById('khataName').value=identity.name;
+      let item=state.khata.find(x=>x.date===date && x.accountKey===accountKey && String(x.targetWorkerId||'')===String(targetWorkerId||''));
+      if(!item){ item={name:identity.name,role:identity.role,accountKey,ownerUid:identity.role==='owner' ? state.customerUser.uid : '',targetWorkerId,targetWorkerName,date,att:0,amount:0}; state.khata.unshift(item); }
+      if(identity.role==='owner') item.ownerUid=state.customerUser.uid;
+      item.role=identity.role; item.accountKey=accountKey; item.name=identity.name;
+      item.targetWorkerId=targetWorkerId; item.targetWorkerName=targetWorkerName;
+      item.att=(Number(item.att)||0)+(Number(att)||0);
+      item.amount=(Number(item.amount)||0)+(Number(amount)||0);
+      saveData(); renderKhata();
+    }
+    function saveKhataWork(){
+      syncKhataLoginIdentity();
+      if(!(document.getElementById('khataOwnerName').value||'').trim()) return alert('पहले खाते का नाम उपलब्ध होना चाहिए।');
+      if(!selectedKhataWorkDate) return alert('कैलेंडर में पहले तारीख चुनें।');
+      if(getKhataLoginIdentity()?.role==='owner' && !selectedKhataTargetWorkerId) return alert('पहले मजदूर चुनें।');
+      const already=state.khata.some(x=>x.date===selectedKhataWorkDate&&(Number(x.att)||0)>0&&khataRecordMatchesCurrentTarget(x));
+      if(already) return alert('इस तारीख की हाजिरी पहले से दर्ज है।');
+      upsertKhataRecord(selectedKhataWorkDate,1,0); closeKhataModal();
+    }
+    function saveKhataPayment(){
+      if(khataSaving)return;
+      syncKhataLoginIdentity();
+      if(!(document.getElementById('khataOwnerName').value||'').trim()) return alert('पहले खाते का नाम उपलब्ध होना चाहिए।');
+      if(getKhataLoginIdentity()?.role==='owner' && !selectedKhataTargetWorkerId) return alert('पहले मजदूर चुनें।');
+      const date=document.getElementById('khataPaymentDate').value;
+      const amount=Number(document.getElementById('khataPaymentAmount').value);
+      if(!date||!Number.isFinite(amount)||amount<=0) return alert('भुगतान की तारीख और सही राशि लिखें।');
+      khataSaving=true; upsertKhataRecord(date,0,amount); closeKhataModal();
+    }
+    function deleteKhataEntry(index){
+      if(!Number.isInteger(index)||index<0||index>=state.khata.length)return;
+      if(!confirm('क्या आप यह खाता रिकॉर्ड डिलीट करना चाहते हैं?'))return;
+      state.khata.splice(index,1); saveData(); renderKhata();
+    }
+    function normalizeKhataRecords(){
+      const merged=new Map();
+      state.khata.forEach(item=>{
+        const name=(item.name||'मेरा खाता').trim()||'मेरा खाता';
+        const role=item.role||'owner';
+        const accountKey=item.accountKey || '';
+        const legacyKey='legacy:'+role+':'+name;
+        const key=(accountKey || legacyKey)+'|'+String(item.targetWorkerId||'')+'|'+(item.date||'');
+        if(!merged.has(key)) merged.set(key,{...item,name,role,att:0,amount:0});
+        const row=merged.get(key);
+        row.att=Math.max(Number(row.att)||0,Number(item.att)||0);
+        row.amount=(Number(row.amount)||0)+(Number(item.amount)||0);
+      });
+      state.khata=Array.from(merged.values()).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+    }
+    function openKhataHistory(){
+      khataHistoryCursor=new Date(new Date().getFullYear(),new Date().getMonth(),1);
+      document.getElementById('khataHistoryModal').style.display='flex';
+      renderKhataHistory();
+    }
+    function closeKhataHistory(){document.getElementById('khataHistoryModal').style.display='none';}
+    function changeKhataHistoryMonth(delta){khataHistoryCursor.setMonth(khataHistoryCursor.getMonth()+delta);renderKhataHistory();}
+    function deleteKhataMonthOwner(month,name){
+      if(!confirm(`${name} का ${khataMonthText(new Date(month+'-01T00:00:00'))} महीने का पूरा रिकॉर्ड डिलीट करना है?`))return;
+      const identity=getKhataLoginIdentity();
+      state.khata=state.khata.filter(x=>!((x.date||'').slice(0,7)===month && (x.accountKey ? x.accountKey===identity?.accountKey : (x.name||'मेरा खाता')===name) && (x.role||'owner')===(identity?.role||'owner')));
+      saveData();renderKhata();renderKhataHistory();
+    }
+    function renderKhataHistory(){
+      const identity=getKhataLoginIdentity();
+      const month=khataHistoryCursor.getFullYear()+'-'+String(khataHistoryCursor.getMonth()+1).padStart(2,'0');
+      document.getElementById('khataHistoryMonthLabel').innerText=khataMonthText(khataHistoryCursor);
+      const content=document.getElementById('khataHistoryContent');
+      if(!identity){content.innerHTML='<p style="text-align:center;color:var(--muted);">हिस्ट्री देखने के लिए पहले लॉगिन करें।</p>';return;}
+
+      const monthRecords=getKhataVisibleRecords()
+        .filter(x=>(x.date||'').slice(0,7)===month)
+        .sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+
+      if(!monthRecords.length){
+        content.innerHTML='<p style="text-align:center;color:var(--muted);">इस महीने आपके खाते में कोई रिकॉर्ड नहीं है।</p>';
+        return;
+      }
+
+      const workRecords=monthRecords.filter(x=>(Number(x.att)||0)>0);
+      const paymentRecords=monthRecords.filter(x=>(Number(x.amount)||0)>0);
+      const totalDays=workRecords.reduce((sum,x)=>sum+(Number(x.att)||0),0);
+      const totalPaid=paymentRecords.reduce((sum,x)=>sum+(Number(x.amount)||0),0);
+      const formatShortDate=value=>{
+        if(!value)return 'तारीख उपलब्ध नहीं';
+        const d=new Date(value+'T00:00:00');
+        return isNaN(d.getTime())?value:d.toLocaleDateString('hi-IN',{day:'numeric',month:'long',year:'numeric'});
+      };
+
+      const workList=workRecords.map((x,i)=>
+        `<div style="padding:4px 0;">${i+1}. ${msEscape(formatShortDate(x.date))}${identity.role==='owner' && x.targetWorkerName ? ' — '+msEscape(x.targetWorkerName) : ''}</div>`
+      ).join('') || '<div style="color:var(--muted);padding:4px 0;">इस महीने काम की हाजिरी दर्ज नहीं है।</div>';
+
+      const paymentList=paymentRecords.map((x,i)=>
+        `<div style="padding:4px 0;">${i+1}. ${msEscape(formatShortDate(x.date))}${identity.role==='owner' && x.targetWorkerName ? ' — '+msEscape(x.targetWorkerName) : ''} को ₹${Number(x.amount)||0} मिले</div>`
+      ).join('') || '<div style="color:var(--muted);padding:4px 0;">इस महीने कोई भुगतान दर्ज नहीं है।</div>';
+
+      const roleLabel=identity.role==='worker'?'मजदूर':'मालिक';
+      content.innerHTML=`
+        <div style="font-weight:800;margin-bottom:12px;">${roleLabel}: ${msEscape(identity.name)}</div>
+
+        <div style="margin-bottom:16px;">
+          <div style="font-weight:800;font-size:15px;margin-bottom:5px;">कुल काम ${totalDays} दिन</div>
+          <div style="font-weight:700;margin:6px 0 3px;">काम की तारीखें:</div>
+          ${workList}
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <div style="font-weight:800;font-size:15px;margin-bottom:5px;">कुल भुगतान ₹${totalPaid}</div>
+          <div style="font-weight:700;margin:6px 0 3px;">भुगतान की तारीखें:</div>
+          ${paymentList}
+        </div>
+
+        <button type="button" class="btn-primary" onclick="deleteKhataMonthOwner('${month}',decodeURIComponent('${encodeURIComponent(identity.name)}'))" style="margin-top:9px;padding:6px 12px;">इस महीने का पूरा रिकॉर्ड डिलीट</button>
+      `;
+    }
+    function renderKhata(){
+      normalizeKhataRecords();
+      saveData();
+      const visibleRecords=getKhataVisibleRecords();
+      const totalDays=visibleRecords.reduce((sum,x)=>sum+(Number(x.att)||0),0);
+      const totalPaid=visibleRecords.reduce((sum,x)=>sum+(Number(x.amount)||0),0);
+      document.getElementById('khataTotalDays').innerText=totalDays;
+      document.getElementById('khataTotalPaid').innerText='₹'+totalPaid;
+      const list=document.getElementById('khataHistoryList');
+      list.innerHTML=visibleRecords.length?'':'इस खाते में अभी कोई रिकॉर्ड दर्ज नहीं है।';
+    }
+
+    // Hidden Admin 5-Tap Trigger
+    let tapCount = 0;
+    let tapTimer = null;
+    document.getElementById('brandLogo').addEventListener('click', () => {
+      tapCount++;
+      clearTimeout(tapTimer);
+      tapTimer = setTimeout(() => { tapCount = 0; }, 1500);
+      if (tapCount >= 5) {
+        tapCount = 0;
+        document.getElementById('adminModal').classList.add('active');
+      }
+    });
+
+    function verifyAdmin() {
+      const entered = document.getElementById('adminPassInput').value;
+      if (entered === state.adminPass) {
+        document.getElementById('adminPassInput').value = '';
+        closeModals();
+        switchTab('admin');
+      } else {
+        alert('गलत पासवर्ड! कृपया सही एडमिन पासवर्ड डालें।');
+      }
+    }
+
+    function changeAdminPassword() {
+      const newPass = document.getElementById('newAdminPass').value.trim();
+      if (newPass.length < 4) return alert('पासवर्ड कम से कम 4 अक्षरों या अंकों का होना चाहिए।');
+      state.adminPass = newPass;
+      document.getElementById('newAdminPass').value = '';
+      saveData();
+      alert('एडमिन पासवर्ड सफलतापूर्वक बदल दिया गया है!');
+    }
+
+    function closeModals() {
+      document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+    }
+
+    // Admin: registered member directory with safe multi-select deletion.
+    let msSelectedRegisteredMemberIds = new Set();
+
+    function renderRegisteredMembers() {
+      const btn = document.getElementById('msRegisteredMembersBtn');
+      const list = document.getElementById('msRegisteredMembersList');
+      const members = (state.workers || []).slice().sort((a,b) => (a.name || '').localeCompare((b.name || ''), 'hi'));
+      if (btn) btn.textContent = `👥 रजिस्टर्ड मेंबर (${members.length})`;
+      if (!list) return;
+      const validIds = new Set(members.map(w => String(w.id)));
+      msSelectedRegisteredMemberIds = new Set([...msSelectedRegisteredMemberIds].filter(id => validIds.has(id)));
+      if (!members.length) {
+        list.innerHTML = '<p style="text-align:center;color:var(--muted);">अभी कोई मेंबर रजिस्टर्ड नहीं है।</p>';
+        return;
+      }
+      list.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:flex-end;padding:8px 2px;border-bottom:1px solid #d1d5db;">
+          <span id="msSelectedRegisteredCount" style="font-size:12px;color:var(--muted);">${msSelectedRegisteredMemberIds.size ? '1 मेंबर चुना गया' : 'एक मेंबर चुनें'}</span>
+        </div>
+        <div id="msRegisteredMemberRows">${members.map(w => `
+          <div class="ms-directory-row" style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;border-bottom:1px solid #e5e7eb;padding:9px 2px;">
+            <label style="display:flex;align-items:center;gap:9px;min-width:0;flex:1;cursor:pointer;">
+              <input type="checkbox" class="ms-registered-member-check" value="${msEscape(w.id)}" ${msSelectedRegisteredMemberIds.has(String(w.id)) ? 'checked' : ''} onchange="toggleRegisteredMemberSelection(this.value,this.checked)" style="width:18px;height:18px;flex-shrink:0;">
+              <span style="min-width:0;"><strong>${msEscape(w.name || 'नाम उपलब्ध नहीं')}</strong><span style="display:block;font-size:12px;color:var(--muted);">${msEscape(w.category || 'श्रेणी उपलब्ध नहीं')}</span></span>
+            </label>
+            <button type="button" class="ms-green-btn" onclick="showWorkerIdPopup('${String(w.id).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')">आईडी देखें</button>
+          </div>`).join('')}</div>
+        <button type="button" id="msDeleteSelectedRegistered" onclick="deleteSelectedRegisteredMembers()" style="display:${msSelectedRegisteredMemberIds.size ? 'inline-block' : 'none'};background:#dc2626;color:#fff;border:0;border-radius:8px;padding:9px 13px;font-weight:800;margin-top:12px;">चुना हुआ मेंबर डिलीट करें</button>`;
+    }
+
+    function updateRegisteredMemberSelectionUI() {
+      const checks = [...document.querySelectorAll('.ms-registered-member-check')];
+      const selectedCount = msSelectedRegisteredMemberIds.size;
+      checks.forEach(c => { c.checked = msSelectedRegisteredMemberIds.has(String(c.value)); });
+      const count = document.getElementById('msSelectedRegisteredCount');
+      if (count) count.textContent = selectedCount ? '1 मेंबर चुना गया' : 'एक मेंबर चुनें';
+      const del = document.getElementById('msDeleteSelectedRegistered');
+      if (del) del.style.display = selectedCount ? 'inline-block' : 'none';
+    }
+
+    function toggleRegisteredMemberSelection(workerId, checked) {
+      const id = String(workerId);
+      // Admin selects exactly one member at a time; no select-all behavior.
+      msSelectedRegisteredMemberIds.clear();
+      if (checked) msSelectedRegisteredMemberIds.add(id);
+      updateRegisteredMemberSelectionUI();
+    }
+
+    function toggleRegisteredMembers() {
+      const list = document.getElementById('msRegisteredMembersList');
+      if (!list) return;
+      list.style.display = list.style.display === 'none' ? 'block' : 'none';
+      renderRegisteredMembers();
+    }
+
+    function deleteSelectedRegisteredMembers() {
+      const selectedIds = new Set(msSelectedRegisteredMemberIds);
+      if (!selectedIds.size) return alert('कृपया पहले एक मेंबर सेलेक्ट करें।');
+      if (selectedIds.size > 1) { const first = [...selectedIds][0]; msSelectedRegisteredMemberIds = new Set([first]); }
+      const selectedMembers = (state.workers || []).filter(w => selectedIds.has(String(w.id)));
+      if (!selectedMembers.length) return alert('चुने गए मेंबर रिकॉर्ड नहीं मिले।');
+      const names = selectedMembers.map(w => w.name || 'नाम उपलब्ध नहीं').join(', ');
+      if (!confirm(`क्या आप ${names} को स्थायी रूप से डिलीट करना चाहते हैं? यह कार्रवाई वापस नहीं होगी।`)) return;
+      state.workers = (state.workers || []).filter(w => !selectedIds.has(String(w.id)));
+      if (selectedIds.has(String(state.currentWorkerId))) state.currentWorkerId = null;
+      msSelectedRegisteredMemberIds.clear();
+      saveData();
+      renderRegisteredMembers();
+      renderWorkers();
+      alert('मेंबर सफलतापूर्वक डिलीट कर दिया गया।');
+    }
+
+    // ===== Additive enhancements: preserve all original functions and stored data =====
+    const msOriginalRenderWorkers = renderWorkers;
+    const msOriginalRenderProfile = renderProfile;
+    let msProfileDirty = false;
+    let msProfileSelectedPhotoFile = null;
+    function selectProfileEditPhoto(input) {
+      const file = input?.files?.[0];
+      if (!file) return;
+      msProfileSelectedPhotoFile = file;
+      const label = document.getElementById('msEditPhotoLabel');
+      if (label) label.textContent = 'चुनी गई फोटो: ' + file.name;
+      markMsProfileDirty();
+    }
+
+    function msEscape(value) {
+      return String(value == null ? '' : value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+    }
+
+    // Compact worker results: name, trade and ID button only.
+    renderWorkers = function() {
+      const cat = document.getElementById('searchCategory')?.value || 'ALL';
+      const query = (document.getElementById('searchCity')?.value || '').trim();
+      const list = document.getElementById('workersList');
+      if (!list) return;
+      if (state.customerUser?.role === 'worker') {
+        list.innerHTML = '<div class="card" style="text-align:center;color:var(--muted);">मजदूर खाते में मालिक की कनेक्शन रिक्वेस्ट यहाँ दिखाई देगी। मजदूर खोजने का विकल्प मालिक के खाते में है।</div>';
+        return;
+      }
+      if (cat === 'ALL' || !/^[0-9]{6}$/.test(query)) {
+        list.innerHTML = '<div class="card" style="text-align:center;color:var(--muted);">पहले काम की श्रेणी चुनें और 6 अंकों का PIN Code डालें। सभी मजदूरों की सूची अपने आप नहीं दिखाई जाएगी।</div>';
+        return;
+      }
+      const filtered = state.workers.filter(w => {
+        if (!w.uid || w.blocked || !w.available) return false;
+        if (w.category !== cat) return false;
+        return String(w.pincode || '') === query;
+      });
+      if (!filtered.length) {
+        list.innerHTML = '<div class="card" style="text-align:center;color:var(--muted);">इस काम और PIN Code पर कोई उपलब्ध रजिस्टर्ड मजदूर नहीं मिला।</div>';
+        return;
+      }
+      list.innerHTML = filtered.map(w => `
+        <div class="ms-directory-row ms-worker-result">
+          <div class="ms-worker-label"><strong>${msEscape(w.name)}</strong><span>${msEscape(w.category)} · ID: ${msEscape(w.id)}</span></div>
+          <button type="button" class="ms-green-btn" onclick="showWorkerIdPopup('${msEscape(w.id)}')">आईडी देखें</button>
+        </div>`).join('');
+    };
+
+    function showWorkerIdPopup(workerId) {
+      const worker = state.workers.find(w => String(w.id) === String(workerId));
+      if (!worker) return alert('यह मजदूर रिकॉर्ड नहीं मिला।');
+      const oldCurrent = state.currentWorkerId;
+      const wasProfileOpen = document.getElementById('sec-profile')?.classList.contains('active');
+      msOriginalRenderProfile(workerId);
+      const card = document.getElementById('printableIdCard');
+      const body = document.getElementById('msIdPopupBody');
+      if (!card || !body) return;
+      body.innerHTML = '';
+      body.appendChild(card.cloneNode(true));
+      const connectBtn = document.createElement('button');
+      connectBtn.type = 'button'; connectBtn.className = 'ms-green-btn'; connectBtn.style.cssText = 'display:block;width:100%;margin-top:12px;padding:12px;font-weight:900;';
+      connectBtn.textContent = '🔗 इस मजदूर को कनेक्ट करें';
+      connectBtn.addEventListener('click', () => { closeWorkerIdPopup(); openWorkerConnection(workerId); });
+      body.appendChild(connectBtn);
+      document.getElementById('msIdPopup').classList.add('active');
+      if (wasProfileOpen && oldCurrent && state.workers.some(w => w.id === oldCurrent)) renderProfile(oldCurrent);
+      else document.getElementById('profileContent').innerHTML = '';
+    }
+
+
+    function closeWorkerIdPopup() {
+      document.getElementById('msIdPopup')?.classList.remove('active');
+      document.getElementById('msIdPopupBody').innerHTML = '';
+    }
+
+    // Profile lookup is by the worker's registered mobile number.
+    openProfileModal = function() {
+      document.getElementById('profileSearchInput').value = '';
+      document.getElementById('profileSearchInput').placeholder = 'रजिस्टर्ड 10 अंकों का मोबाइल नंबर';
+      document.getElementById('profileModal').classList.add('active');
+    };
+
+    loadWorkerProfile = function() {
+      const phone = document.getElementById('profileSearchInput').value.trim();
+      if (!/^[0-9]{10}$/.test(phone)) return alert('कृपया रजिस्टर्ड 10 अंकों का मोबाइल नंबर डालें।');
+      const signedInPhone = String(msAuth?.currentUser?.email || '').split('@')[0].replace(/\D/g, '');
+      if (!msAuth?.currentUser || signedInPhone !== phone) return alert('पहले इसी रजिस्टर्ड मोबाइल नंबर और पासवर्ड से लॉगिन करें।');
+      const worker = state.workers.find(w => String(w.phone).replace(/\D/g, '') === phone);
+      if (!worker) return alert('इस मोबाइल नंबर से कोई रजिस्ट्रेशन नहीं मिला।');
+      state.currentWorkerId = worker.id;
+      state.customerUser = { uid: msAuth.currentUser.uid, name: worker.name || '', phone, role: 'worker' };
+      localStorage.setItem('ms_customer_user', JSON.stringify(state.customerUser));
+      localStorage.setItem('ms_logged_worker', worker.id);
+      closeModals();
+      renderProfile(worker.id);
+      switchTab('profile');
+    };
+
+    renderProfile = function(workerId) {
+      const w = state.workers.find(x => x.id === workerId);
+      if (!w) return;
+      const container = document.getElementById('profileContent');
+      if (!container) return;
+      const loggedPhone = String(state.customerUser?.phone || '').replace(/\D/g, '');
+      const isOwnProfile = !!loggedPhone && loggedPhone === String(w.phone || '').replace(/\D/g, '');
+      container.innerHTML = `
+        <div class="ms-profile-editor">
+          <div class="ms-profile-top"><strong>📝 आपका रजिस्ट्रेशन</strong></div>
+          <div class="ms-profile-idrow">
+            <div><span class="ms-id-number">${msEscape(w.id)}</span> <span class="ms-green-tick">✓</span></div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;">
+              <button type="button" class="ms-green-btn" onclick="showWorkerIdPopup('${msEscape(w.id)}')">आईडी देखें</button>
+              ${isOwnProfile ? `<button type="button" style="border:0;border-radius:7px;padding:5px 8px;font-size:11px;background:${w.blocked ? '#dc2626' : '#16a34a'};color:#fff;font-weight:800;" onclick="toggleWorkerBlock('${msEscape(w.id)}')">${w.blocked ? '🔴 ब्लॉक' : '🟢 अनब्लॉक'}</button>` : ''}
+            </div>
+          </div>
+          <form id="msProfileEditForm" class="ms-profile-form" oninput="markMsProfileDirty()" onchange="markMsProfileDirty()" onsubmit="saveMsProfile(event)">
+            <div class="ms-profile-grid">
+              <div class="form-group"><label>पूरा नाम</label><input id="msEditName" required value="${msEscape(w.name)}"></div>
+              <div class="form-group"><label>रजिस्टर्ड मोबाइल नंबर</label><input id="msEditPhone" type="tel" required pattern="[0-9]{10}" maxlength="10" value="${msEscape(w.phone)}"></div>
+              <div class="form-group"><label>काम की श्रेणी</label><select id="msEditCategory">${state.categories.map(c=>`<option value="${msEscape(c)}" ${c===w.category?'selected':''}>${msEscape(c)}</option>`).join('')}</select></div>
+              <div class="form-group"><label>रोज़ाना रेट (₹)</label><input id="msEditRate" type="number" min="0" required value="${msEscape(w.rate)}"></div>
+              <div class="form-group"><label>शहर / गांव</label><input id="msEditCity" required value="${msEscape(w.city)}"></div>
+              <div class="form-group"><label>PIN Code</label><input id="msEditPin" type="tel" pattern="[0-9]{6}" maxlength="6" required value="${msEscape(w.pincode)}"></div>
+              <div class="form-group"><label>फोटो बदलें (वैकल्पिक)</label>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button type="button" class="btn-primary photo-choice-btn" style="margin-top:0;flex:0 1 auto;padding:3px 7px;font-size:10px;min-height:26px;" onclick="document.getElementById('msEditPhotoCamera').click()">📷 कैमरा खोलें</button>
+                  <button type="button" class="btn-success photo-choice-btn" style="margin-top:0;flex:0 1 auto;padding:3px 7px;font-size:10px;min-height:26px;" onclick="document.getElementById('msEditPhotoGallery').click()">🖼️ गैलरी से चुनें</button>
+                </div>
+                <input id="msEditPhotoCamera" type="file" accept="image/*" capture="environment" style="display:none" onchange="selectProfileEditPhoto(this)">
+                <input id="msEditPhotoGallery" type="file" accept="image/*" style="display:none" onchange="selectProfileEditPhoto(this)">
+                <div id="msEditPhotoLabel" style="font-size:12px;color:#475569;margin-top:5px;">नई फोटो नहीं चुनी गई है</div>
+              </div>
+            </div>
+            <button id="msProfileUpdateBtn" class="ms-red-update" type="submit" disabled>UPDATE</button>
+          </form>
+        </div>`;
+      msProfileDirty = false;
+      msProfileSelectedPhotoFile = null;
+    };
+
+    function toggleWorkerBlock(workerId) {
+      const w = (state.workers || []).find(x => String(x.id) === String(workerId));
+      if (!w) return;
+      const loggedPhone = String(state.customerUser?.phone || '').replace(/\D/g, '');
+      const workerPhone = String(w.phone || '').replace(/\D/g, '');
+      if (!loggedPhone || loggedPhone !== workerPhone) {
+        alert('सिर्फ अपने रजिस्टर्ड मोबाइल नंबर से लॉगिन करके ही ब्लॉक / अनब्लॉक करें।');
+        return;
+      }
+      // Instant local action: no extra confirmation or success popup delay.
+      w.blocked = !w.blocked;
+      saveData();
+      renderProfile(w.id);
+      if (typeof renderWorkers === 'function') renderWorkers();
+    }
+
+    function markMsProfileDirty() {
+      msProfileDirty = true;
+      const btn = document.getElementById('msProfileUpdateBtn');
+      if (btn) { btn.disabled = false; btn.style.background = '#dc2626'; btn.textContent = 'UPDATE'; }
+    }
+
+    function updateWorkerPin() {
+      const pin = document.getElementById('msEditPin')?.value.trim();
+      if (!/^[0-9]{6}$/.test(pin||'')) return alert('कृपया सही 6 अंकों का PIN Code डालें।');
+      const w = state.workers.find(x => x.id === state.currentWorkerId);
+      if (!w) return alert('प्रोफाइल नहीं मिली।');
+      if (!confirm('क्या आप अपना नया PIN Code अपडेट करना चाहते हैं?')) return;
+      w.pincode = pin;
+      saveData();
+      markMsProfileDirty();
+      renderWorkers();
+      alert('PIN Code अपडेट हो गया। अंतिम बदलाव सुरक्षित करने के लिए UPDATE भी दबाएँ।');
+    }
+
+    function saveMsProfile(e) {
+      e.preventDefault();
+      const w = state.workers.find(x => x.id === state.currentWorkerId);
+      if (!w) return alert('प्रोफाइल नहीं मिली।');
+      const phone = document.getElementById('msEditPhone').value.trim();
+      if (state.workers.some(x => x.id !== w.id && String(x.phone) === phone)) return alert('यह मोबाइल नंबर किसी दूसरे रजिस्ट्रेशन में मौजूद है।');
+      const photoFile = msProfileSelectedPhotoFile;
+      msProfileSelectedPhotoFile = null;
+      const apply = photo => {
+        w.name = document.getElementById('msEditName').value.trim();
+        w.phone = phone;
+        w.category = document.getElementById('msEditCategory').value;
+        w.rate = document.getElementById('msEditRate').value;
+        w.city = document.getElementById('msEditCity').value.trim();
+        w.pincode = document.getElementById('msEditPin').value.trim();
+        if (photo) w.photo = photo;
+        if (w.uid && msDirectoryRef) msDirectoryRef.child(w.uid).update({ id:w.id, uid:w.uid, name:w.name, category:w.category, city:w.city, pincode:w.pincode, rate:Number(w.rate)||0, photo:w.photo||'', available:w.available!==false, blocked:!!w.blocked, validUntil:w.validUntil||'' }).catch(console.error);
+        saveData();
+        renderWorkers();
+        renderProfile(w.id);
+        const btn = document.getElementById('msProfileUpdateBtn');
+        if (btn) { btn.disabled = true; btn.style.background = '#16a34a'; btn.textContent = '✓ UPDATE सफल'; }
+        msProfileDirty = false;
+        alert('आपकी प्रोफाइल सफलतापूर्वक अपडेट हो गई। आपका ID नंबर वही रखा गया है।');
+      };
+      if (photoFile) {
+        const reader = new FileReader();
+        reader.onload = ev => apply(ev.target.result);
+        reader.readAsDataURL(photoFile);
+      } else apply(null);
+    }
+
+
+
+    // Keep registered-member count current when the admin panel is opened.
+    const msOriginalSwitchTab = switchTab;
+    switchTab = function(tab) {
+      msOriginalSwitchTab(tab);
+      if (tab === 'admin') renderRegisteredMembers();
+    };
+
+    // Initialize App after profile and worker-list overrides are installed.
+    checkCustomerLogin();
+    renderCategories();
+    renderWorkers();
+    renderKhata();
+    syncPaymentUI();
+  </script>
+</body>
